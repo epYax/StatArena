@@ -15,24 +15,59 @@ const MIN_REQUEST_INTERVAL = 100; // 100ms between requests
 function getServerFromTag(tagLine: string): { region: string; regional: string } {
   const tag = tagLine.toUpperCase();
   
-  if (tag.includes('EUW') || tag.includes('EUN') || tag.includes('EU')) {
+  // European servers
+  if (tag === 'EUW' || tag.includes('EUW')) {
     return { region: 'euw1', regional: 'europe' };
-  } else if (tag.includes('KR') || tag.includes('ASIA')) {
-    return { region: 'kr', regional: 'asia' };
-  } else if (tag.includes('BR') || tag.includes('LAN') || tag.includes('LAS')) {
-    return { region: 'br1', regional: 'americas' };
-  } else if (tag.includes('JP')) {
-    return { region: 'jp1', regional: 'asia' };
-  } else if (tag.includes('OC') || tag.includes('OCE')) {
-    return { region: 'oc1', regional: 'sea' };
-  } else if (tag.includes('RU')) {
-    return { region: 'ru', regional: 'europe' };
-  } else if (tag.includes('TR')) {
+  } else if (tag === 'EUNE' || tag.includes('EUN')) {
+    return { region: 'eun1', regional: 'europe' };
+  } else if (tag === 'TR1' || tag === 'TR') {
     return { region: 'tr1', regional: 'europe' };
+  } else if (tag === 'RU' || tag === 'RU1') {
+    return { region: 'ru', regional: 'europe' };
   }
   
-  // Default to NA
-  return { region: 'na1', regional: 'americas' };
+  // Americas servers
+  else if (tag === 'NA1' || tag === 'NA') {
+    return { region: 'na1', regional: 'americas' };
+  } else if (tag === 'BR1' || tag === 'BR') {
+    return { region: 'br1', regional: 'americas' };
+  } else if (tag === 'LAN' || tag === 'LA1') {
+    return { region: 'la1', regional: 'americas' };
+  } else if (tag === 'LAS' || tag === 'LA2') {
+    return { region: 'la2', regional: 'americas' };
+  }
+  
+  // Asia servers
+  else if (tag === 'KR' || tag === 'KR1') {
+    return { region: 'kr', regional: 'asia' };
+  } else if (tag === 'JP1' || tag === 'JP') {
+    return { region: 'jp1', regional: 'asia' };
+  }
+  
+  // SEA/Oceania servers
+  else if (tag === 'OC1' || tag === 'OCE') {
+    return { region: 'oc1', regional: 'sea' };
+  } else if (tag === 'PH2' || tag === 'PH') {
+    return { region: 'ph2', regional: 'sea' };
+  } else if (tag === 'SG2' || tag === 'SG') {
+    return { region: 'sg2', regional: 'sea' };
+  } else if (tag === 'TH2' || tag === 'TH') {
+    return { region: 'th2', regional: 'sea' };
+  } else if (tag === 'TW2' || tag === 'TW') {
+    return { region: 'tw2', regional: 'sea' };
+  } else if (tag === 'VN2' || tag === 'VN') {
+    return { region: 'vn2', regional: 'sea' };
+  }
+  
+  // Check for common tag patterns
+  else if (tag.includes('EU')) {
+    return { region: 'euw1', regional: 'europe' };
+  } else if (tag.includes('ASIA')) {
+    return { region: 'kr', regional: 'asia' };
+  }
+  
+  // Default to Europe (since most tags are European format)
+  return { region: 'euw1', regional: 'europe' };
 }
 
 // Secure API call via Supabase Edge Function
