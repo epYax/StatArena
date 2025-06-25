@@ -20,17 +20,17 @@ export default function MainMenu({ player, onFindBattle }: MainMenuProps) {
     }
 
     const rankTier = rank.split(' ')[0].toLowerCase();
-    const rankDivision = rank.split(' ')[1];
+    // const rankDivision = rank.split(' ')[1];
 
     // Map rank divisions to Roman numerals for the file names
-    const divisionMap: { [key: string]: string } = {
-      'IV': '4',
-      'III': '3', 
-      'II': '2',
-      'I': '1'
-    };
+    // const divisionMap: { [key: string]: string } = {
+    //   'IV': '4',
+    //   'III': '3', 
+    //   'II': '2',
+    //   'I': '1'
+    // };
 
-    const division = divisionMap[rankDivision] || '1';
+    // const division = divisionMap[rankDivision] || '1';
 
     console.log(`🖥️ MainMenu received player with rank: ${rankTier}`);
     

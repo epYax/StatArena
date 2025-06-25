@@ -93,18 +93,18 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
     }
   }, [isSpinning, phase, onSpinComplete]);
 
-  const getReelItem = (reelIndex: number, offset: number = 0) => {
-    const position = (reelPositions[reelIndex] + offset) % STAT_CATEGORIES.length;
-    return STAT_CATEGORIES[position]?.name || '???';
-  };
+  // const getReelItem = (reelIndex: number, offset: number = 0) => {
+  //   const position = (reelPositions[reelIndex] + offset) % STAT_CATEGORIES.length;
+  //   return STAT_CATEGORIES[position]?.name || '???';
+  // };
 
-  const getReelStat = (reelIndex: number) => {
-    if (finalChoices.length > 0 && reelIndex < finalChoices.length) {
-      return finalChoices[reelIndex];
-    }
-    const position = reelPositions[reelIndex] % STAT_CATEGORIES.length;
-    return STAT_CATEGORIES[position];
-  };
+  // const getReelStat = (reelIndex: number) => {
+  //   if (finalChoices.length > 0 && reelIndex < finalChoices.length) {
+  //     return finalChoices[reelIndex];
+  //   }
+  //   const position = reelPositions[reelIndex] % STAT_CATEGORIES.length;
+  //   return STAT_CATEGORIES[position];
+  // };
 
   const getStatDescription = () => {
     if (selectedStat) {

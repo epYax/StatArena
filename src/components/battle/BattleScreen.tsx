@@ -666,7 +666,7 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
 
               {/* Blurred stat choices (so player can see what options exist) */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 opacity-50 blur-sm pointer-events-none">
-                {statChoices.map((stat, index) => (
+                {statChoices.map((stat) => (
                   <div key={stat.id} className="bg-gray-800 rounded-lg p-4 border border-gray-600">
                     <div className="text-white font-bold text-sm mb-2">{stat.name}</div>
                     <div className="text-gray-400 text-xs">{stat.description}</div>

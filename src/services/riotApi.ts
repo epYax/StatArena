@@ -1,11 +1,11 @@
 import type { RiotAccount, MatchData, Player, ChampionMastery } from '../types';
 import { getRandomFamousPlayer, getFamousPlayersByRegion } from '../data/famousPlayers';
-import { supabase } from './supabase';
+// import { supabase } from './supabase';
 
 // Configuration - temporarily back to direct API calls
 const RIOT_API_KEY = import.meta.env.VITE_RIOT_API_KEY;
 const REGIONAL = import.meta.env.VITE_RIOT_REGIONAL || 'americas';
-const RIOT_API_BASE = `https://${REGIONAL}.api.riotgames.com`;
+// const RIOT_API_BASE = `https://${REGIONAL}.api.riotgames.com`;
 
 // Simple rate limiting
 let lastRequestTime = 0;
@@ -36,33 +36,33 @@ function getServerFromTag(tagLine: string): { region: string; regional: string }
 }
 
 // Secure API call via Supabase Edge Function
-async function callRiotAPI(endpoint: string, region?: string, regional?: string, params?: Record<string, any>) {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-      throw new Error('User not authenticated');
-    }
+// async function callRiotAPI(endpoint: string, region?: string, regional?: string, params?: Record<string, any>) {
+//   try {
+//     const { data: { session } } = await supabase.auth.getSession();
+//     
+//     if (!session) {
+//       throw new Error('User not authenticated');
+//     }
 
-    const response = await supabase.functions.invoke('riot-api', {
-      body: {
-        endpoint,
-        region: region || 'euw1',
-        regional: regional || REGIONAL,
-        params: params || {}
-      }
-    });
+//     const response = await supabase.functions.invoke('riot-api', {
+//       body: {
+//         endpoint,
+//         region: region || 'euw1',
+//         regional: regional || REGIONAL,
+//         params: params || {}
+//       }
+//     });
 
-    if (response.error) {
-      throw new Error(`Supabase function error: ${response.error.message}`);
-    }
+//     if (response.error) {
+//       throw new Error(`Supabase function error: ${response.error.message}`);
+//     }
 
-    return response.data;
-  } catch (error) {
-    console.error('Error calling Riot API via Supabase:', error);
-    throw error;
-  }
-}
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error calling Riot API via Supabase:', error);
+//     throw error;
+//   }
+// }
 
 // Fallback data for demo mode (using reliable icon IDs)
 const MOCK_SUMMONER_ICONS = [

@@ -8,9 +8,9 @@ interface ResultsScreenProps {
 export default function ResultsScreen({ battle, onReturnToMenu }: ResultsScreenProps) {
   const winner = battle.winner!;
 
-  const getResultEmoji = () => {
-    return winner.hp > 50 ? '⚔️' : winner.hp > 0 ? '⚔️' : '💀';
-  };
+  // const getResultEmoji = () => {
+  //   return winner.hp > 50 ? '⚔️' : winner.hp > 0 ? '⚔️' : '💀';
+  // };
 
   const getBattleSummary = () => {
     const roundsPlayed = battle.rounds.length;

@@ -73,7 +73,7 @@ export const getSpellIcon = (spellKey: string): string => {
 /**
  * Get ranked emblem URL
  */
-export const getRankedEmblem = (tier: string, division?: string): string => {
+export const getRankedEmblem = (tier: string, _division?: string): string => {
   const tierLower = tier.toLowerCase();
   if (['master', 'grandmaster', 'challenger'].includes(tierLower)) {
     return `${COMMUNITY_DRAGON_BASE}/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblems/${tierLower}.png`;

@@ -63,8 +63,12 @@ export default function LeagueRankDisplay({ player }: LeagueRankDisplayProps) {
           style={{ transform: 'scale(3)' }}
           onError={(e) => {
             // Fallback if image fails to load
-            e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling!.style.display = 'block';
+            const target = e.currentTarget as HTMLImageElement;
+            target.style.display = 'none';
+            const nextSibling = target.nextElementSibling as HTMLElement;
+            if (nextSibling) {
+              nextSibling.style.display = 'block';
+            }
           }}
         />
         <div 
