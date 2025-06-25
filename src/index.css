@@ -1,0 +1,982 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Spectral:wght@400;600&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Source Sans Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: 
+    /* Rich Summoner's Rift inspired background */
+    radial-gradient(ellipse at top left, rgba(200, 155, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(15, 72, 170, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at center, rgba(0, 191, 255, 0.05) 0%, transparent 80%),
+    linear-gradient(135deg, 
+      #0A1428 0%, 
+      #0F1419 15%, 
+      #1E2328 30%, 
+      #0A1428 45%, 
+      #1A1F2E 60%, 
+      #0A1428 75%, 
+      #1E2328 90%, 
+      #0A1428 100%);
+  background-attachment: fixed;
+  color: #F0E6D2;
+  min-height: 100vh;
+  min-width: 1024px;
+  overflow-x: auto;
+  cursor: default;
+}
+
+/* Desktop-first optimizations */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 1440px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1920px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+/* Smooth cursor interactions */
+button, a, input, [role="button"] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Focus states for accessibility */
+button:focus-visible, input:focus-visible {
+  outline: 2px solid #F0E6D2;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar for desktop */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A1428;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C89B3C, #D4AF37, #C89B3C);
+  border-radius: 6px;
+  border: 2px solid #0A1428;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #D4AF37, #F0E6D2, #D4AF37);
+}
+
+.glow-effect {
+  box-shadow: 0 0 20px rgba(205, 190, 145, 0.5);
+}
+
+.glow-effect-blue {
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
+}
+
+.league-frame {
+  position: relative;
+  background: 
+    radial-gradient(circle at top left, rgba(200, 155, 60, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at bottom right, rgba(15, 72, 170, 0.06) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 15%,
+      rgba(30, 35, 40, 0.9) 30%, 
+      rgba(10, 20, 40, 0.95) 50%, 
+      rgba(25, 30, 38, 0.92) 70%,
+      rgba(30, 35, 40, 0.9) 85%, 
+      rgba(10, 20, 40, 0.95) 100%);
+  border: 3px solid transparent;
+  border-image: linear-gradient(45deg, 
+    #785A28, 
+    #C89B3C, 
+    #F0E6D2, 
+    #D4AF37, 
+    #C89B3C, 
+    #785A28) 1;
+  border-radius: 12px;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.15),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 32px rgba(200, 155, 60, 0.25),
+    0 0 64px rgba(212, 175, 55, 0.1);
+}
+
+.league-frame::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, 
+    #C89B3C, 
+    #F0E6D2, 
+    #D4AF37, 
+    #C89B3C);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0.4;
+  animation: ancientPulse 3s ease-in-out infinite;
+}
+
+.league-button {
+  position: relative;
+  background: 
+    radial-gradient(ellipse at top, rgba(200, 155, 60, 0.08) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      rgba(30, 35, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 25%,
+      rgba(10, 20, 40, 0.95) 50%, 
+      rgba(20, 25, 35, 0.92) 75%,
+      rgba(30, 35, 40, 0.95) 100%);
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, #785A28, #C89B3C, #785A28) 1;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.15),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.2),
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(200, 155, 60, 0.3);
+}
+
+.league-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(212, 175, 55, 0.4), 
+    rgba(240, 230, 210, 0.2),
+    rgba(212, 175, 55, 0.4), 
+    transparent);
+  transition: left 0.6s ease;
+}
+
+.league-button:hover::before {
+  left: 100%;
+}
+
+.league-button:hover {
+  border-image: linear-gradient(45deg, #C89B3C, #F0E6D2, #C89B3C) 1;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.25),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.3),
+    0 5px 12px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(200, 155, 60, 0.5),
+    0 0 48px rgba(212, 175, 55, 0.2);
+  transform: translateY(-2px);
+}
+
+.league-card {
+  background: 
+    radial-gradient(circle at top left, rgba(200, 155, 60, 0.06) 0%, transparent 60%),
+    radial-gradient(circle at bottom right, rgba(15, 72, 170, 0.04) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 20%,
+      rgba(30, 35, 40, 0.9) 40%, 
+      rgba(10, 20, 40, 0.95) 60%, 
+      rgba(25, 30, 38, 0.92) 80%,
+      rgba(10, 20, 40, 0.95) 100%);
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, #785A28, #C89B3C, #785A28) 1;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.1),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.15),
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(200, 155, 60, 0.2);
+  transition: all 0.3s ease;
+}
+
+.league-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #F0E6D2, #C89B3C, #F0E6D2, transparent);
+  opacity: 0.6;
+}
+
+.league-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37, #C89B3C, #D4AF37, transparent);
+  opacity: 0.5;
+}
+
+.league-card:hover {
+  border-image: linear-gradient(45deg, #C89B3C, #F0E6D2, #C89B3C) 1;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.15),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.2),
+    0 5px 12px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(200, 155, 60, 0.4);
+  transform: translateY(-1px);
+}
+
+.league-primary-button {
+  position: relative;
+  background: 
+    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      #C89B3C 0%, 
+      #D4AF37 15%, 
+      #F0E6D2 35%, 
+      #FFFFFF 50%, 
+      #F0E6D2 65%, 
+      #D4AF37 85%, 
+      #C89B3C 100%);
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #785A28, #C89B3C, #F0E6D2, #C89B3C, #785A28) 1;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  color: #0A1428;
+  font-weight: 700;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 8px rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    inset 0 3px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.3),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 32px rgba(200, 155, 60, 0.6),
+    0 0 64px rgba(212, 175, 55, 0.3);
+  overflow: hidden;
+}
+
+.league-primary-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.6), 
+    rgba(212, 175, 55, 0.4),
+    rgba(255, 255, 255, 0.6), 
+    transparent);
+  transition: left 0.8s ease;
+}
+
+.league-primary-button:hover::before {
+  left: 100%;
+}
+
+.league-primary-button:hover {
+  background: 
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      #D4AF37 0%, 
+      #F0E6D2 10%, 
+      #FFFFFF 25%, 
+      #F0E6D2 50%, 
+      #FFFFFF 75%, 
+      #F0E6D2 90%, 
+      #D4AF37 100%);
+  border-image: linear-gradient(45deg, #C89B3C, #F0E6D2, #FFFFFF, #F0E6D2, #C89B3C) 1;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    inset 0 4px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(200, 155, 60, 0.8),
+    0 0 80px rgba(212, 175, 55, 0.5);
+}
+
+.league-primary-button:active {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(200, 155, 60, 0.6);
+}
+
+.card-flip {
+  animation: flip 0.6s ease-in-out;
+}
+
+@keyframes flip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(90deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+.damage-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes slot-spin {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  50% { transform: translateY(10px); }
+  75% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.slot-reel-spinning {
+  animation: slot-spin 0.1s infinite linear;
+}
+
+.slot-reel-stopped {
+  animation: none;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+/* League magical particles and rune effects */
+.league-runes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.league-runes::before,
+.league-runes::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #F0E6D2 0%, #D4AF37 50%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 12px #D4AF37,
+    0 0 24px rgba(212, 175, 55, 0.5),
+    30px 20px 0 2px #C89B3C,
+    30px 20px 8px 2px rgba(200, 155, 60, 0.4),
+    70px 45px 0 1px #F0E6D2,
+    70px 45px 6px 1px rgba(240, 230, 210, 0.6),
+    110px 15px 0 2px #8B5CF6,
+    110px 15px 10px 2px rgba(139, 92, 246, 0.4),
+    150px 35px 0 1px #00BFFF,
+    150px 35px 8px 1px rgba(0, 191, 255, 0.5),
+    190px 60px 0 2px #D4AF37,
+    190px 60px 12px 2px rgba(212, 175, 55, 0.4),
+    230px 10px 0 1px #C89B3C,
+    230px 10px 6px 1px rgba(200, 155, 60, 0.3);
+  animation: runeFloat 15s infinite linear;
+}
+
+.league-runes::after {
+  animation-delay: 7s;
+  animation-duration: 22s;
+  opacity: 0.8;
+  width: 3px;
+  height: 3px;
+}
+
+/* Ancient magical energy background */
+.summoners-rift-bg {
+  position: relative;
+  background-image: 
+    radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 60% 20%, rgba(0, 191, 255, 0.06) 0%, transparent 55%),
+    radial-gradient(circle at 40% 80%, rgba(200, 155, 60, 0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 10% 60%, rgba(15, 72, 170, 0.05) 0%, transparent 50%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.98) 0%, 
+      rgba(15, 25, 35, 0.95) 20%,
+      rgba(30, 35, 40, 0.92) 40%, 
+      rgba(10, 20, 40, 0.98) 60%, 
+      rgba(20, 25, 35, 0.95) 80%,
+      rgba(10, 20, 40, 0.98) 100%);
+}
+
+.summoners-rift-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.03) 0%, transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.02) 0%, transparent 50%);
+  animation: ancientPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Enhanced hover effects for interactive elements */
+.interactive-glow {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.interactive-glow:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 4px 8px rgba(15, 150, 199, 0.3));
+}
+
+.interactive-glow:active {
+  transform: translateY(0);
+}
+
+/* Loading spinner with hextech styling */
+.hextech-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid transparent;
+  border-top: 3px solid #F0E6D2;
+  border-right: 3px solid #0596C7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hextech border animations */
+.hextech-border-animation {
+  position: relative;
+  overflow: hidden;
+}
+
+.hextech-border-animation::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #F0E6D2, transparent);
+  animation: borderSlide 3s infinite;
+}
+
+@keyframes borderSlide {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Desktop keyboard navigation */
+.keyboard-focus {
+  position: relative;
+}
+
+.keyboard-focus:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid #F0E6D2;
+  border-radius: inherit;
+  background: rgba(240, 230, 210, 0.1);
+  animation: focusGlow 2s infinite;
+}
+
+@keyframes focusGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* High performance animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Responsive hextech elements */
+@media (min-width: 1024px) {
+  .hextech-frame {
+    clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+  }
+  
+  .hexagon-button {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+  }
+}
+
+@media (min-width: 1440px) {
+  .hextech-frame {
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+  }
+}
+
+/* Battle screen enhancements */
+.battle-arena-bg {
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(15, 150, 199, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(240, 230, 210, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(9, 20, 40, 0.9) 0%, rgba(44, 83, 100, 0.7) 100%);
+}
+
+/* Stat reveal animations */
+.stat-reveal {
+  animation: statReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes statReveal {
+  0% {
+    opacity: 0;
+    transform: perspective(400px) rotateY(90deg) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: perspective(400px) rotateY(45deg) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(400px) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes ancientRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ornate League UI Components */
+.league-ornate-emblem {
+  position: relative;
+  background: 
+    radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      rgba(120, 90, 40, 0.8) 0%, 
+      rgba(200, 155, 60, 0.9) 25%,
+      rgba(240, 230, 210, 0.95) 50%, 
+      rgba(200, 155, 60, 0.9) 75%,
+      rgba(120, 90, 40, 0.8) 100%);
+  border: 6px solid transparent;
+  border-image: linear-gradient(45deg, 
+    #785A28, 
+    #C89B3C, 
+    #F0E6D2, 
+    #FFFFFF,
+    #F0E6D2,
+    #C89B3C, 
+    #785A28) 1;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 4px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -4px 0 rgba(120, 90, 40, 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 0 48px rgba(200, 155, 60, 0.7),
+    0 0 96px rgba(212, 175, 55, 0.4);
+  overflow: visible;
+}
+
+.league-ornate-emblem::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: conic-gradient(from 0deg, 
+    #C89B3C, 
+    #F0E6D2, 
+    #FFFFFF,
+    #F0E6D2,
+    #D4AF37, 
+    #C89B3C);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.6;
+  animation: ancientRotate 8s linear infinite;
+}
+
+.league-ornate-emblem::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  background: radial-gradient(circle, 
+    rgba(200, 155, 60, 0.3) 0%, 
+    rgba(212, 175, 55, 0.2) 40%,
+    transparent 70%);
+  border-radius: 50%;
+  z-index: -2;
+  animation: ancientPulse 4s ease-in-out infinite;
+}
+
+.league-ornate-card {
+  position: relative;
+  background: 
+    radial-gradient(ellipse at top left, rgba(200, 155, 60, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(15, 72, 170, 0.05) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.98) 0%, 
+      rgba(20, 25, 35, 0.95) 15%,
+      rgba(30, 35, 40, 0.92) 30%, 
+      rgba(10, 20, 40, 0.98) 50%, 
+      rgba(25, 30, 38, 0.95) 70%,
+      rgba(30, 35, 40, 0.92) 85%, 
+      rgba(10, 20, 40, 0.98) 100%);
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, 
+    #785A28, 
+    #C89B3C, 
+    #F0E6D2, 
+    #D4AF37,
+    #C89B3C, 
+    #785A28) 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 3px 0 rgba(240, 230, 210, 0.2),
+    inset 0 -2px 0 rgba(120, 90, 40, 0.4),
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(200, 155, 60, 0.4),
+    0 0 80px rgba(212, 175, 55, 0.2);
+  transition: all 0.4s ease;
+}
+
+.league-ornate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    #F0E6D2, 
+    #FFFFFF,
+    #F0E6D2, 
+    #C89B3C, 
+    #F0E6D2,
+    #FFFFFF,
+    #F0E6D2, 
+    transparent);
+  opacity: 0.8;
+}
+
+.league-ornate-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    #D4AF37, 
+    #C89B3C, 
+    #785A28,
+    #C89B3C,
+    #D4AF37, 
+    transparent);
+  opacity: 0.7;
+}
+
+.league-ornate-card:hover {
+  border-image: linear-gradient(45deg, 
+    #C89B3C, 
+    #F0E6D2, 
+    #FFFFFF,
+    #F0E6D2,
+    #C89B3C) 1;
+  box-shadow: 
+    inset 0 4px 0 rgba(240, 230, 210, 0.3),
+    inset 0 -3px 0 rgba(120, 90, 40, 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 48px rgba(200, 155, 60, 0.6),
+    0 0 96px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+.league-input {
+  background: 
+    radial-gradient(ellipse at top, rgba(240, 230, 210, 0.03) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 30%,
+      rgba(30, 35, 40, 0.9) 70%, 
+      rgba(10, 20, 40, 0.95) 100%);
+  border: 3px solid transparent;
+  border-image: linear-gradient(45deg, #785A28, #C89B3C, #785A28) 1;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(200, 155, 60, 0.2);
+  transition: all 0.3s ease;
+}
+
+.league-input:focus {
+  border-image: linear-gradient(45deg, #C89B3C, #F0E6D2, #C89B3C) 1;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 0 rgba(240, 230, 210, 0.1),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 32px rgba(200, 155, 60, 0.5),
+    0 0 64px rgba(212, 175, 55, 0.3);
+  transform: translateY(-1px);
+}
+
+.league-ornate-info-box {
+  background: 
+    radial-gradient(circle at top, rgba(0, 191, 255, 0.08) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      rgba(15, 72, 170, 0.15) 0%, 
+      rgba(10, 20, 40, 0.92) 30%,
+      rgba(20, 25, 35, 0.9) 70%, 
+      rgba(15, 72, 170, 0.15) 100%);
+  border: 3px solid transparent;
+  border-image: linear-gradient(45deg, #0F48AA, #00BFFF, #0F48AA) 1;
+  box-shadow: 
+    inset 0 2px 0 rgba(0, 191, 255, 0.15),
+    inset 0 -1px 0 rgba(15, 72, 170, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(0, 191, 255, 0.3);
+}
+
+.league-error-card {
+  background: 
+    radial-gradient(circle at top, rgba(255, 0, 0, 0.08) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      rgba(139, 0, 0, 0.2) 0%, 
+      rgba(10, 20, 40, 0.95) 30%,
+      rgba(20, 25, 35, 0.92) 70%, 
+      rgba(139, 0, 0, 0.2) 100%);
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #8B0000, #FF6B6B, #8B0000) 1;
+  border-radius: 12px;
+  box-shadow: 
+    inset 0 2px 0 rgba(255, 107, 107, 0.15),
+    inset 0 -2px 0 rgba(139, 0, 0, 0.3),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 32px rgba(255, 107, 107, 0.3);
+}
+
+.league-ornate-feature-card {
+  background: 
+    radial-gradient(circle at center, rgba(200, 155, 60, 0.06) 0%, transparent 70%),
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 25%,
+      rgba(30, 35, 40, 0.9) 50%, 
+      rgba(20, 25, 35, 0.92) 75%,
+      rgba(10, 20, 40, 0.95) 100%);
+  border: 3px solid transparent;
+  border-image: linear-gradient(45deg, #785A28, #C89B3C, #785A28) 1;
+  border-radius: 12px;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.15),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(200, 155, 60, 0.25);
+  transition: all 0.3s ease;
+}
+
+.league-ornate-feature-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    inset 0 3px 0 rgba(240, 230, 210, 0.2),
+    inset 0 -2px 0 rgba(120, 90, 40, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(200, 155, 60, 0.4),
+    0 0 80px rgba(212, 175, 55, 0.2);
+}
+
+/* Simplified League UI Components - Classy and Clean */
+.league-emblem-simple {
+  position: relative;
+  background: 
+    linear-gradient(135deg, 
+      rgba(120, 90, 40, 0.6) 0%, 
+      rgba(200, 155, 60, 0.7) 50%,
+      rgba(120, 90, 40, 0.6) 100%);
+  border: 3px solid #C89B3C;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 2px 0 rgba(240, 230, 210, 0.2),
+    inset 0 -2px 0 rgba(120, 90, 40, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(200, 155, 60, 0.3);
+}
+
+.league-card-simple {
+  background: 
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.95) 0%, 
+      rgba(20, 25, 35, 0.92) 30%,
+      rgba(30, 35, 40, 0.9) 70%, 
+      rgba(10, 20, 40, 0.95) 100%);
+  border: 2px solid #785A28;
+  box-shadow: 
+    inset 0 1px 0 rgba(240, 230, 210, 0.1),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.2),
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(200, 155, 60, 0.2);
+  transition: all 0.3s ease;
+}
+
+.league-card-simple:hover {
+  border-color: #C89B3C;
+  box-shadow: 
+    inset 0 1px 0 rgba(240, 230, 210, 0.15),
+    inset 0 -1px 0 rgba(120, 90, 40, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(200, 155, 60, 0.3);
+}
+
+.league-button-simple {
+  background: 
+    linear-gradient(135deg, 
+      rgba(30, 35, 40, 0.9) 0%, 
+      rgba(20, 25, 35, 0.92) 50%,
+      rgba(30, 35, 40, 0.9) 100%);
+  border: 2px solid #785A28;
+  transition: all 0.3s ease;
+}
+
+.league-button-simple:hover {
+  border-color: #C89B3C;
+  background: 
+    linear-gradient(135deg, 
+      rgba(40, 45, 50, 0.9) 0%, 
+      rgba(30, 35, 40, 0.92) 50%,
+      rgba(40, 45, 50, 0.9) 100%);
+}
+
+.league-button-active {
+  background: 
+    linear-gradient(135deg, 
+      #C89B3C 0%, 
+      #D4AF37 50%, 
+      #C89B3C 100%);
+  border: 2px solid #F0E6D2;
+  color: #0A1428;
+  font-weight: 700;
+  box-shadow: 
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(200, 155, 60, 0.4);
+}
+
+.league-input-simple {
+  background: 
+    linear-gradient(135deg, 
+      rgba(10, 20, 40, 0.9) 0%, 
+      rgba(20, 25, 35, 0.85) 50%,
+      rgba(10, 20, 40, 0.9) 100%);
+  border: 2px solid #785A28;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(200, 155, 60, 0.1);
+  transition: all 0.3s ease;
+}
+
+.league-input-simple:focus {
+  border-color: #C89B3C;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.15),
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(200, 155, 60, 0.3);
+}
+
+.league-primary-button-simple {
+  background: 
+    linear-gradient(135deg, 
+      #C89B3C 0%, 
+      #D4AF37 25%, 
+      #F0E6D2 50%, 
+      #D4AF37 75%, 
+      #C89B3C 100%);
+  border: 3px solid #785A28;
+  color: #0A1428;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(200, 155, 60, 0.4);
+  transition: all 0.3s ease;
+}
+
+.league-primary-button-simple:hover {
+  background: 
+    linear-gradient(135deg, 
+      #D4AF37 0%, 
+      #F0E6D2 25%, 
+      #FFFFFF 50%, 
+      #F0E6D2 75%, 
+      #D4AF37 100%);
+  border-color: #C89B3C;
+  box-shadow: 
+    inset 0 3px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(200, 155, 60, 0.5);
+  transform: translateY(-2px);
+}
+
+.league-info-box-simple {
+  background: 
+    linear-gradient(135deg, 
+      rgba(15, 72, 170, 0.1) 0%, 
+      rgba(10, 20, 40, 0.9) 30%,
+      rgba(20, 25, 35, 0.85) 70%, 
+      rgba(15, 72, 170, 0.1) 100%);
+  border: 2px solid #0F48AA;
+  box-shadow: 
+    inset 0 1px 0 rgba(0, 191, 255, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    0 0 12px rgba(0, 191, 255, 0.2);
+}
