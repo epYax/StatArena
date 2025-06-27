@@ -372,15 +372,90 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
 
                   {/* VS Section - Battle results */}
                   <div className="text-center">
-                    {state.currentStatComparison && (state.battlePhase === BATTLE_PHASES.REVEAL || state.battlePhase === BATTLE_PHASES.DAMAGE || state.battlePhase === BATTLE_PHASES.NEXT_ROUND) ? (
+                    {/* Großer Battle Theme Banner - CENTER AREA */}
+                    {state.selectedStat ? (
+                      <div className="mb-6">
+                        <div className="relative bg-gradient-to-r from-lol-gold/20 via-yellow-500/30 to-lol-gold/20 rounded-2xl border-2 border-lol-gold/60 p-6 shadow-2xl battle-phase-enter w-full max-w-2xl mx-auto overflow-hidden">
+                          {/* Decorative background effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-lol-gold/10 to-transparent animate-pulse"></div>
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-lol-gold to-transparent"></div>
+                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-lol-gold to-transparent"></div>
+                          
+                          {/* Content */}
+                          <div className="relative z-10">
+                            <div className="text-xs text-lol-gold font-bold mb-2 tracking-widest uppercase">
+                              ⚔️ BATTLE CATEGORY ⚔️
+                            </div>
+                            <div className="text-2xl font-bold text-white mb-3 leading-tight font-['Orbitron'] drop-shadow-lg">
+                              {state.selectedStat.name}
+                            </div>
+                            <div className="text-sm text-gray-200 mb-4 leading-relaxed max-w-lg mx-auto">
+                              {state.selectedStat.description}
+                            </div>
+                            
+                            {/* Win condition badge */}
+                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm border-2 ${
+                              state.selectedStat.higherWins 
+                                ? 'bg-green-500/30 text-green-300 border-green-400/60 shadow-green-400/20' 
+                                : 'bg-red-500/30 text-red-300 border-red-400/60 shadow-red-400/20'
+                            } shadow-lg`}>
+                              {state.selectedStat.higherWins ? '📈 HIGHER WINS' : '📉 LOWER WINS'}
+                            </div>
+                            
+                            {/* Show comparison values during reveal/damage phases */}
+                            {state.currentStatComparison && (state.battlePhase === BATTLE_PHASES.REVEAL || state.battlePhase === BATTLE_PHASES.DAMAGE || state.battlePhase === BATTLE_PHASES.NEXT_ROUND) && (
+                              <div className="mt-6 pt-4 border-t-2 border-lol-gold/30">
+                                <div className="text-xs text-lol-gold font-bold mb-2 tracking-wide uppercase">BATTLE RESULT</div>
+                                <div className="flex justify-center items-center gap-6 text-xl font-bold">
+                                  <div className="text-center">
+                                    <div className="text-blue-400 text-2xl font-bold drop-shadow">{state.currentStatComparison.player1Value}</div>
+                                    <div className="text-xs text-blue-300">Player 1</div>
+                                  </div>
+                                  <div className="text-lol-gold text-3xl font-bold animate-pulse">⚔️</div>
+                                  <div className="text-center">
+                                    <div className="text-red-400 text-2xl font-bold drop-shadow">{state.currentStatComparison.player2Value}</div>
+                                    <div className="text-xs text-red-300">Player 2</div>
+                                  </div>
+                                </div>
+                                
+                                {/* Winner announcement */}
+                                <div className="mt-4">
+                                  {state.currentStatComparison.winner !== 'draw' ? (
+                                    <div className={`text-lg font-bold drop-shadow-lg ${
+                                      state.currentStatComparison.winner === 1 ? 'text-blue-400' : 'text-red-400'
+                                    }`}>
+                                      🏆 PLAYER {state.currentStatComparison.winner} DOMINATES! 🏆
+                                    </div>
+                                  ) : (
+                                    <div className="text-lg font-bold text-lol-gold drop-shadow-lg">
+                                      🤝 PERFECT TIE - NO DAMAGE! 🤝
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Decorative corner elements */}
+                          <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-lol-gold/60"></div>
+                          <div className="absolute top-2 right-2 w-3 h-3 border-r-2 border-t-2 border-lol-gold/60"></div>
+                          <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2 border-lol-gold/60"></div>
+                          <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-lol-gold/60"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Show default VS when no stat selected
+                      <div className="text-4xl font-bold text-lol-gold mb-4">⚔️</div>
+                    )}
+
+                    {/* Battle Results (only if no stat panel or as additional info) */}
+                    {state.currentStatComparison && (state.battlePhase === BATTLE_PHASES.REVEAL || state.battlePhase === BATTLE_PHASES.DAMAGE || state.battlePhase === BATTLE_PHASES.NEXT_ROUND) && !state.selectedStat && (
                       <RoundResult 
                         statComparison={state.currentStatComparison}
                         damage={calculateDamage(state.currentStatComparison.winner, 
                                               state.currentStatComparison.player1Value, 
                                               state.currentStatComparison.player2Value)}
                       />
-                    ) : (
-                      <div className="text-4xl font-bold text-lol-gold mb-4">⚔️</div>
                     )}
                   </div>
 

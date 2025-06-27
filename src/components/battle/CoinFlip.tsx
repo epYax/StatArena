@@ -78,6 +78,7 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
             relative w-full h-full transform-style-preserve-3d transition-all duration-1000
             ${isFlipping ? 'animate-spin-3d' : ''}
             ${showResult ? 'scale-110' : ''}
+            ${showResult && result === 2 ? 'rotate-y-180' : ''}
           `}>
             {/* Coin Front Face (Player 1) */}
             <div className={`
