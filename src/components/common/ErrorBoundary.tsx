@@ -90,7 +90,9 @@ export function BattleError({ error, onRetry, onExit }: BattleErrorProps) {
     <div className="flex items-center justify-center h-full">
       <div className="max-w-md w-full mx-4">
         <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 text-center">
-          <div className="text-4xl mb-3">🚫</div>
+          <div className="mb-3 flex justify-center">
+            <LoLIcon type="block" size="xl" className="text-red-400" />
+          </div>
           <h3 className="text-xl font-bold text-white mb-3 font-['Orbitron']">
             Battle Interrupted
           </h3>

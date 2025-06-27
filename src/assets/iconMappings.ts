@@ -16,7 +16,7 @@ export type IconType =
   | 'check' | 'close' | 'loading' | 'refresh' | 'crown'
   | 'robot' | 'slot-machine' | 'dice' | 'calculate' | 'crystal'
   | 'fire' | 'heart' | 'search' | 'hourglass' | 'flag'
-  | 'loop' | 'higher' | 'lower' | 'vs';
+  | 'loop' | 'higher' | 'lower' | 'vs' | 'stop' | 'tool' | 'block';
 
 // Mapping emojis to League of Legends assets
 export const ICON_MAPPINGS: Record<IconType, {
@@ -180,6 +180,23 @@ export const ICON_MAPPINGS: Record<IconType, {
     url: `${BASE_URLS.dataDragon}/item/3031.png`, // Infinity Edge (vs/battle) - keep this one
     alt: 'Versus',
     fallback: '⚔️'
+  },
+  
+  // New icons for final cleanup
+  'stop': {
+    url: `${BASE_URLS.dataDragon}/spell/SummonerExhaust.png`, // Exhaust - stops/slows enemies
+    alt: 'Stop',
+    fallback: '🛑'
+  },
+  'tool': {
+    url: `${BASE_URLS.dataDragon}/item/3053.png`, // Sterak's Gage - tool/wrench-like
+    alt: 'Tool',
+    fallback: '🔧'
+  },
+  'block': {
+    url: `${BASE_URLS.dataDragon}/item/3102.png`, // Banshee's Veil - blocks spells
+    alt: 'Block',
+    fallback: '🚫'
   }
 };
 

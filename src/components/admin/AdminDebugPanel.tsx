@@ -102,7 +102,10 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
       <div className="bg-black/50 border-b border-lol-gold/30 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-lol-gold font-['Orbitron']">🔧 Admin Debug Panel</h1>
+            <h1 className="text-2xl font-bold text-lol-gold font-['Orbitron'] flex items-center gap-2">
+              <LoLIcon type="tool" size="md" />
+              Admin Debug Panel
+            </h1>
             <p className="text-gray-400">Complete API data inspection for {player.summonerName}</p>
           </div>
           <div className="flex space-x-4">
@@ -127,10 +130,10 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex space-x-1 bg-gray-800 rounded-lg p-1 mb-6">
           {[
-            { id: 'overview', label: 'Overview', icon: '📊' },
-            { id: 'masteries', label: 'Masteries', icon: '🏆' },
-            { id: 'matches', label: 'Matches', icon: '⚔️' },
-            { id: 'raw', label: 'Raw Data', icon: '🔍' }
+            { id: 'overview', label: 'Overview', icon: 'stats' },
+            { id: 'masteries', label: 'Masteries', icon: 'victory' },
+            { id: 'matches', label: 'Matches', icon: 'battle' },
+            { id: 'raw', label: 'Raw Data', icon: 'search' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -141,7 +144,10 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
                   : 'text-gray-300 hover:text-white hover:bg-gray-700'
               }`}
             >
-              {tab.label}
+              <div className="flex items-center justify-center space-x-2">
+                <LoLIcon type={tab.icon as any} size="sm" />
+                <span>{tab.label}</span>
+              </div>
             </button>
           ))}
         </div>
@@ -262,7 +268,10 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
               <div className="max-h-[600px] overflow-y-auto p-4">
                 <div className="space-y-4">
                   <details className="bg-gray-700 rounded">
-                    <summary className="p-3 cursor-pointer font-semibold">📊 Account Data</summary>
+                    <summary className="p-3 cursor-pointer font-semibold flex items-center gap-2">
+                      <LoLIcon type="stats" size="xs" />
+                      Account Data
+                    </summary>
                     <pre className="p-3 text-xs overflow-x-auto bg-black/50 font-mono">
                       {JSON.stringify(debugData.account, null, 2)}
                     </pre>

@@ -42,7 +42,7 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
 
   const startSequentialReels = (choices: StatCategory[]) => {
     const stopReel = (reelIndex: number) => {
-      console.log(`🛑 Stopping reel ${reelIndex + 1}`);
+      console.log(`Stopping reel ${reelIndex + 1}`);
       
       setDisplayChoices(prev => {
         const newChoices = [...prev];
