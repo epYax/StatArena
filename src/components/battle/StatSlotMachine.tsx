@@ -19,7 +19,7 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
 
   useEffect(() => {
     if (isSpinning && phase === 'slot_spinning') {
-      console.log('🎰 Starting sequential slot machine');
+      console.log('Starting sequential slot machine');
       
       // Generate final choices first
       const choices: StatCategory[] = [];

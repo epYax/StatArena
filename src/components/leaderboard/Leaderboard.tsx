@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../services/supabase';
 import type { Database } from '../../types/supabase';
+import LoLIcon from '../common/LoLIcon';
 
 interface LeaderboardProps {
   onClose: () => void;
@@ -40,8 +41,9 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
       <div className="max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4 font-['Orbitron']">
-            🏆 Leaderboards
+          <h1 className="text-4xl font-bold text-white mb-4 font-['Orbitron'] flex items-center justify-center gap-3">
+            <LoLIcon type="victory" size="lg" />
+            Leaderboards
           </h1>
           <div className="h-1 w-32 bg-gradient-to-r from-lol-gold to-lol-light-blue mx-auto"></div>
         </div>
@@ -60,7 +62,9 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
               </div>
             ) : error ? (
               <div className="text-center py-12">
-                <div className="text-6xl mb-4">⚠️</div>
+                <div className="mb-4 flex justify-center">
+                  <LoLIcon type="close" size="2xl" className="text-red-400" />
+                </div>
                 <div className="text-xl text-red-400">Failed to load leaderboard</div>
                 <div className="text-gray-500">{error}</div>
                 <button 
@@ -94,7 +98,12 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
                       <div>
                         <div className="text-white font-semibold">{entry.summoner_name}</div>
                         <div className="text-gray-400 text-sm">
-                          {entry.current_win_streak > 0 ? `🔥 ${entry.current_win_streak} win streak` : 'No active streak'}
+                          {entry.current_win_streak > 0 ? (
+                            <span className="flex items-center gap-1">
+                              <LoLIcon type="fire" size="xs" />
+                              {entry.current_win_streak} win streak
+                            </span>
+                          ) : 'No active streak'}
                         </div>
                       </div>
                     </div>
@@ -107,7 +116,9 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
                   </div>
                 )) : (
                   <div className="text-center py-12">
-                    <div className="text-6xl mb-4">🎮</div>
+                    <div className="mb-4 flex justify-center">
+                      <LoLIcon type="target" size="2xl" className="text-gray-400" />
+                    </div>
                     <div className="text-xl text-gray-400">No players ranked yet</div>
                     <div className="text-gray-500">Be the first to climb the leaderboard!</div>
                   </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Player, MatchData, ChampionMastery } from '../../types';
 import { riotApi } from '../../services/riotApi';
+import LoLIcon from '../common/LoLIcon';
 
 interface AdminDebugPanelProps {
   player: Player;
@@ -30,7 +31,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
   const loadDebugData = async () => {
     setLoading(true);
     try {
-      console.log('🔍 Loading complete debug data...');
+      console.log('Loading complete debug data...');
       
       // Get fresh data from API
       const matches = await riotApi.getEnhancedMatchHistory(player.puuid, player.summonerName.split('#')[1]);
@@ -85,7 +86,9 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-spin">🔄</div>
+          <div className="mb-4 animate-spin flex justify-center">
+            <LoLIcon type="refresh" size="2xl" />
+          </div>
           <h2 className="text-2xl font-bold text-white mb-2">Loading Debug Data...</h2>
           <p className="text-gray-400">Fetching all API responses...</p>
         </div>
@@ -107,7 +110,8 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
               onClick={loadDebugData}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded font-semibold transition-colors"
             >
-              🔄 Refresh Data
+              <LoLIcon type="refresh" size="sm" className="mr-2" />
+              Refresh Data
             </button>
             <button
               onClick={onReturnToMenu}
@@ -123,10 +127,10 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex space-x-1 bg-gray-800 rounded-lg p-1 mb-6">
           {[
-            { id: 'overview', label: '📊 Overview', icon: '📊' },
-            { id: 'masteries', label: '🏆 Masteries', icon: '🏆' },
-            { id: 'matches', label: '⚔️ Matches', icon: '⚔️' },
-            { id: 'raw', label: '🔍 Raw Data', icon: '🔍' }
+            { id: 'overview', label: 'Overview', icon: '📊' },
+            { id: 'masteries', label: 'Masteries', icon: '🏆' },
+            { id: 'matches', label: 'Matches', icon: '⚔️' },
+            { id: 'raw', label: 'Raw Data', icon: '🔍' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -148,7 +152,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Account Info */}
               <div className="bg-gray-800 rounded-lg p-4">
-                <h3 className="text-lg font-bold text-lol-gold mb-4">🎮 Account Info</h3>
+                <h3 className="text-lg font-bold text-lol-gold mb-4">Account Info</h3>
                 <div className="space-y-2 text-sm">
                   <div><span className="text-gray-400">PUUID:</span> <span className="font-mono text-xs">{debugData.account.puuid}</span></div>
                   <div><span className="text-gray-400">Game Name:</span> {debugData.account.gameName}</div>
@@ -159,7 +163,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
               {/* Summoner Data */}
               {debugData.summonerData && (
                 <div className="bg-gray-800 rounded-lg p-4">
-                  <h3 className="text-lg font-bold text-lol-gold mb-4">👤 Summoner Data</h3>
+                  <h3 className="text-lg font-bold text-lol-gold mb-4">Summoner Data</h3>
                   <div className="space-y-2 text-sm">
                     <div><span className="text-gray-400">Level:</span> {debugData.summonerData.level}</div>
                   </div>
@@ -168,7 +172,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
 
               {/* Quick Stats */}
               <div className="bg-gray-800 rounded-lg p-4">
-                <h3 className="text-lg font-bold text-lol-gold mb-4">📈 Quick Stats</h3>
+                <h3 className="text-lg font-bold text-lol-gold mb-4">Quick Stats</h3>
                 <div className="space-y-2 text-sm">
                   <div><span className="text-gray-400">Total Masteries:</span> {debugData.masteries.length}</div>
                   <div><span className="text-gray-400">Level 7 Champions:</span> {debugData.masteries.filter(m => m.championLevel >= 7).length}</div>
@@ -182,7 +186,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
           {activeTab === 'masteries' && debugData && (
             <div className="bg-gray-800 rounded-lg">
               <div className="p-4 border-b border-gray-700">
-                <h3 className="text-lg font-bold text-lol-gold">🏆 Champion Masteries ({debugData.masteries.length} total)</h3>
+                <h3 className="text-lg font-bold text-lol-gold">Champion Masteries ({debugData.masteries.length} total)</h3>
                 <p className="text-gray-400 text-sm">All champion mastery data from Riot API</p>
               </div>
               <div className="max-h-[600px] overflow-y-auto">
@@ -217,7 +221,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
           {activeTab === 'matches' && debugData && (
             <div className="bg-gray-800 rounded-lg">
               <div className="p-4 border-b border-gray-700">
-                <h3 className="text-lg font-bold text-lol-gold">⚔️ Match History ({debugData.matches.length} matches)</h3>
+                <h3 className="text-lg font-bold text-lol-gold">Match History ({debugData.matches.length} matches)</h3>
                 <p className="text-gray-400 text-sm">Recent match data with complete statistics</p>
               </div>
               <div className="max-h-[600px] overflow-y-auto">
@@ -252,7 +256,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
           {activeTab === 'raw' && debugData && (
             <div className="bg-gray-800 rounded-lg">
               <div className="p-4 border-b border-gray-700">
-                <h3 className="text-lg font-bold text-lol-gold">🔍 Raw API Data</h3>
+                <h3 className="text-lg font-bold text-lol-gold">Raw API Data</h3>
                 <p className="text-gray-400 text-sm">Complete API responses for debugging</p>
               </div>
               <div className="max-h-[600px] overflow-y-auto p-4">
@@ -265,14 +269,14 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
                   </details>
                   
                   <details className="bg-gray-700 rounded">
-                    <summary className="p-3 cursor-pointer font-semibold">🏆 Champion Masteries ({debugData.masteries.length})</summary>
+                    <summary className="p-3 cursor-pointer font-semibold">Champion Masteries ({debugData.masteries.length})</summary>
                     <pre className="p-3 text-xs overflow-x-auto bg-black/50 font-mono max-h-96 overflow-y-auto">
                       {JSON.stringify(debugData.masteries, null, 2)}
                     </pre>
                   </details>
                   
                   <details className="bg-gray-700 rounded">
-                    <summary className="p-3 cursor-pointer font-semibold">⚔️ Match History ({debugData.matches.length})</summary>
+                    <summary className="p-3 cursor-pointer font-semibold">Match History ({debugData.matches.length})</summary>
                     <pre className="p-3 text-xs overflow-x-auto bg-black/50 font-mono max-h-96 overflow-y-auto">
                       {JSON.stringify(debugData.matches, null, 2)}
                     </pre>
@@ -280,7 +284,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
                   
                   {debugData.summonerData && (
                     <details className="bg-gray-700 rounded">
-                      <summary className="p-3 cursor-pointer font-semibold">👤 Summoner Data</summary>
+                      <summary className="p-3 cursor-pointer font-semibold">Summoner Data</summary>
                       <pre className="p-3 text-xs overflow-x-auto bg-black/50 font-mono">
                         {JSON.stringify(debugData.summonerData, null, 2)}
                       </pre>

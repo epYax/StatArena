@@ -9,9 +9,6 @@ interface ResultsScreenProps {
 export default function ResultsScreen({ battle, onReturnToMenu }: ResultsScreenProps) {
   const winner = battle.winner!;
 
-  // const getResultEmoji = () => {
-  //   return winner.hp > 50 ? '⚔️' : winner.hp > 0 ? '⚔️' : '💀';
-  // };
 
   const getBattleSummary = () => {
     const roundsPlayed = battle.rounds.length;
@@ -137,11 +134,14 @@ export default function ResultsScreen({ battle, onReturnToMenu }: ResultsScreenP
 
         {/* Fun Stats */}
         <div className="mt-8 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg p-4 border border-purple-500/20">
-          <h3 className="text-lg font-semibold text-purple-300 mb-2">🎭 Fun Fact</h3>
+          <h3 className="text-lg font-semibold text-purple-300 mb-2 flex items-center gap-2">
+            <LoLIcon type="magic" size="sm" />
+            Fun Fact
+          </h3>
           <p className="text-gray-400">
             {battle.rounds.some(r => r.statComparison.category.includes('Death')) 
-              ? "Someone's feeding habits were exposed in this battle! 😅"
-              : "This was a battle of skill and strategy! 🧠"
+              ? "Someone's feeding habits were exposed in this battle!"
+              : "This was a battle of skill and strategy!"
             }
           </p>
         </div>

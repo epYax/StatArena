@@ -13,7 +13,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(mv:*)",
-      "WebFetch(domain:communitydragon.org)"
+      "WebFetch(domain:communitydragon.org)",
+      "WebFetch(domain:ddragon.leagueoflegends.com)",
+      "WebFetch(domain:raw.communitydragon.org)",
+      "Bash(sed:*)"
     ],
     "deny": []
   }

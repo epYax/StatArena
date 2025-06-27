@@ -142,10 +142,18 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
           {/* Victory sparkles */}
           {showResult && (
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-0 left-1/4 text-lol-gold animate-ping">✨</div>
-              <div className="absolute top-1/4 right-0 text-lol-gold animate-ping" style={{animationDelay: '0.5s'}}>✨</div>
-              <div className="absolute bottom-1/4 left-0 text-lol-gold animate-ping" style={{animationDelay: '1s'}}>✨</div>
-              <div className="absolute bottom-0 right-1/4 text-lol-gold animate-ping" style={{animationDelay: '1.5s'}}>✨</div>
+              <div className="absolute top-0 left-1/4 animate-ping">
+                <LoLIcon type="sparkle" size="sm" className="text-lol-gold" />
+              </div>
+              <div className="absolute top-1/4 right-0 animate-ping" style={{animationDelay: '0.5s'}}>
+                <LoLIcon type="sparkle" size="sm" className="text-lol-gold" />
+              </div>
+              <div className="absolute bottom-1/4 left-0 animate-ping" style={{animationDelay: '1s'}}>
+                <LoLIcon type="sparkle" size="sm" className="text-lol-gold" />
+              </div>
+              <div className="absolute bottom-0 right-1/4 animate-ping" style={{animationDelay: '1.5s'}}>
+                <LoLIcon type="sparkle" size="sm" className="text-lol-gold" />
+              </div>
             </div>
           )}
         </div>
@@ -154,8 +162,9 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
       {/* Status Text */}
       <div className="text-center">
         {!showResult ? (
-          <div className="text-lol-light-blue text-lg animate-pulse">
-            🎲 Flipping coin...
+          <div className="text-lol-light-blue text-lg animate-pulse flex items-center justify-center gap-2">
+            <LoLIcon type="dice" size="sm" />
+            Flipping coin...
           </div>
         ) : (
           <div className="space-y-2">

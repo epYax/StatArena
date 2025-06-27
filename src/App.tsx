@@ -53,7 +53,7 @@ function App() {
       
       // Final fallback - completely random mock account
       try {
-        console.log('🎲 Creating random demo account...');
+        console.log('Creating random demo account...');
         const account = await riotApi.authenticateWithRiot();
         const player = await riotApi.createPlayer(account);
         

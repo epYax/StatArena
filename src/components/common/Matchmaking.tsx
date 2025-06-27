@@ -79,7 +79,10 @@ export default function Matchmaking() {
 
         {/* Fun Facts */}
         <div className="mt-8 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg p-4 border border-purple-500/20">
-          <h3 className="text-sm font-semibold text-purple-300 mb-2">⭐ Famous Players Available</h3>
+          <h3 className="text-sm font-semibold text-purple-300 mb-2 flex items-center gap-2">
+            <LoLIcon type="crown" size="xs" />
+            Famous Players Available
+          </h3>
           <p className="text-xs text-gray-400">
             You might face Faker, Tyler1, Caps, Doublelift, or other legends with their real match data!
           </p>
