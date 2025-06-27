@@ -63,10 +63,10 @@ export default function FlashyStatAnimation({
   };
 
   const phases: AnimationPhase[] = [
-    { phase: 'intro', duration: 800 },
-    { phase: 'data_flash', duration: 4000 }, // Extended to 4 seconds for better viewing
-    { phase: 'calculating', duration: 2000 },
-    { phase: 'reveal', duration: 1500 }
+    { phase: 'intro', duration: 1200 }, // Increased for playtesters
+    { phase: 'data_flash', duration: 6000 }, // Increased for playtesters - more time to read data
+    { phase: 'calculating', duration: 3000 }, // Increased for playtesters
+    { phase: 'reveal', duration: 2500 } // Increased for playtesters
   ];
 
   useEffect(() => {

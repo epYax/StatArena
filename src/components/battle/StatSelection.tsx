@@ -17,7 +17,7 @@ export default function StatSelection({
   player2Name, 
   onStatSelected, 
   isPlayer1Turn = true,
-  timeLimit = 15
+  timeLimit = 25
 }: StatSelectionProps) {
   const [selectedChoice, setSelectedChoice] = useState<StatCategory | null>(null);
   const [isConfirming, setIsConfirming] = useState(false);

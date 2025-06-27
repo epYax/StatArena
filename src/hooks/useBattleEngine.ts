@@ -191,7 +191,7 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       
       setTimeout(() => {
         setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.ANTICIPATION }));
-      }, 4000); // Extended from 3000ms to 4000ms for more time to appreciate stat selection
+      }, 7000); // Extended for playtesters - more time to understand stat selection
     } catch (error) {
       console.error('Error starting round:', error);
       setState(prev => ({ 
@@ -390,18 +390,18 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       case BATTLE_PHASES.REVEAL:
         timer = setTimeout(() => {
           setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.DAMAGE }));
-        }, 4000); // Extended from 3000ms to 4000ms for better result absorption
+        }, 7000); // Extended for playtesters - more time to read and understand results
         break;
       case BATTLE_PHASES.DAMAGE:
         applyDamageToPlayers();
         timer = setTimeout(() => {
           setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.NEXT_ROUND }));
-        }, 3000); // Extended from 2000ms to 3000ms for damage animation to be fully appreciated
+        }, 5000); // Extended for playtesters - more time to see damage effects
         break;
       case BATTLE_PHASES.NEXT_ROUND:
         timer = setTimeout(() => {
           checkBattleEnd();
-        }, 2500); // Extended from 2000ms to 2500ms for better transition to next round
+        }, 4000); // Extended for playtesters - more time to process round results
         break;
       case BATTLE_PHASES.STAT_SELECTION:
         if (state.isMatchDataLoaded && state.selectedStat) {
@@ -427,7 +427,7 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
     if (state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE && state.currentPlayerTurn === 2 && state.statChoices.length > 0) {
       console.log('🤖 AI opponent (Player 2) is making their choice...');
       
-      const aiDecisionTime = 5000 + Math.random() * 3000; // Extended from 3-5s to 5-8s for more realistic AI thinking
+      const aiDecisionTime = 8000 + Math.random() * 4000; // Extended for playtesters - AI takes 8-12s to give users time to think
       
       const aiTimer = setTimeout(() => {
         const aiChoice = selectStatForAI(state.statChoices);

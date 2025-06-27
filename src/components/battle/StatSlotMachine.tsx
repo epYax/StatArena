@@ -55,7 +55,7 @@ export default function StatSlotMachine({ isSpinning, phase, onSpinComplete }: S
         setTimeout(() => {
           setCurrentReelIndex(reelIndex + 1);
           stopReel(reelIndex + 1);
-        }, 800);
+        }, 1500); // Increased for playtesters - slower reel progression
       } else {
         // All reels stopped
         setTimeout(() => {
@@ -64,14 +64,14 @@ export default function StatSlotMachine({ isSpinning, phase, onSpinComplete }: S
           if (onSpinComplete) {
             onSpinComplete(choices);
           }
-        }, 500);
+        }, 1000); // Increased for playtesters - longer final reveal
       }
     };
     
     // Start with first reel after 1 second of spinning
     setTimeout(() => {
       stopReel(0);
-    }, 1000);
+    }, 2000); // Increased for playtesters - longer initial spin
   };
 
   // const getReelItem = (reelIndex: number, offset: number = 0) => {

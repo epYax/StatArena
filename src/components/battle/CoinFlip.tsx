@@ -31,10 +31,10 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
         // Call callback after showing result (extended delay)
         const resultDelay = setTimeout(() => {
           onFlipComplete(winner);
-        }, 2500);
+        }, 4000); // Increased for playtesters - more time to see result
         
         return () => clearTimeout(resultDelay);
-      }, 3000); // Extended from 2000ms to 3000ms
+      }, 4500); // Increased for playtesters - longer flip animation
       
       return () => clearTimeout(flipDuration);
     }, 1000); // Extended from 500ms to 1000ms
