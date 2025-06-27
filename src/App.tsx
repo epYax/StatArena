@@ -6,6 +6,7 @@ import MainMenu from './components/common/MainMenu';
 import BattleScreen from './components/battle/BattleScreen';
 import ResultsScreen from './components/battle/ResultsScreen';
 import Matchmaking from './components/common/Matchmaking';
+import AdminDebugPanel from './components/admin/AdminDebugPanel';
 
 function App() {
   const [gameState, setGameState] = useState<GameState>({
@@ -153,6 +154,7 @@ function App() {
           <MainMenu 
             player={gameState.currentPlayer!}
             onFindBattle={handleFindBattle}
+            onAdminPanel={() => setGameState(prev => ({ ...prev, gamePhase: 'admin' }))}
           />
         );
       
@@ -171,6 +173,14 @@ function App() {
         return (
           <ResultsScreen 
             battle={gameState.currentBattle!}
+            onReturnToMenu={handleReturnToMenu}
+          />
+        );
+      
+      case 'admin':
+        return (
+          <AdminDebugPanel 
+            player={gameState.currentPlayer!}
             onReturnToMenu={handleReturnToMenu}
           />
         );

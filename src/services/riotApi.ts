@@ -192,6 +192,30 @@ function generateMockMatchData(): MatchData[] {
   return matches;
 }
 
+// Champion ID to Name mapping - from Riot Data Dragon
+const CHAMPION_ID_MAP: Record<number, string> = {
+  1: 'Annie', 2: 'Olaf', 3: 'Galio', 4: 'Twisted Fate', 5: 'Xin Zhao', 6: 'Urgot', 7: 'LeBlanc', 8: 'Vladimir', 9: 'Fiddlesticks',
+  10: 'Kayle', 11: 'Master Yi', 12: 'Alistar', 13: 'Ryze', 14: 'Sion', 15: 'Sivir', 16: 'Soraka', 17: 'Teemo', 18: 'Tristana',
+  19: 'Warwick', 20: 'Nunu & Willump', 21: 'Miss Fortune', 22: 'Ashe', 23: 'Tryndamere', 24: 'Jax', 25: 'Morgana', 26: 'Zilean',
+  27: 'Singed', 28: 'Evelynn', 29: 'Twitch', 30: 'Karthus', 31: 'Cho\'Gath', 32: 'Amumu', 33: 'Rammus', 34: 'Anivia',
+  35: 'Shaco', 36: 'Dr. Mundo', 37: 'Sona', 38: 'Kassadin', 39: 'Irelia', 40: 'Janna', 41: 'Gangplank', 42: 'Corki',
+  43: 'Karma', 44: 'Taric', 45: 'Veigar', 48: 'Trundle', 50: 'Swain', 51: 'Caitlyn', 53: 'Blitzcrank', 54: 'Malphite',
+  55: 'Katarina', 56: 'Nocturne', 57: 'Maokai', 58: 'Renekton', 59: 'Jarvan IV', 60: 'Elise', 61: 'Orianna', 62: 'Wukong',
+  63: 'Brand', 64: 'Lee Sin', 67: 'Vayne', 68: 'Rumble', 69: 'Cassiopeia', 72: 'Skarner', 74: 'Heimerdinger', 75: 'Nasus',
+  76: 'Nidalee', 77: 'Udyr', 78: 'Poppy', 79: 'Gragas', 80: 'Pantheon', 81: 'Ezreal', 82: 'Mordekaiser', 83: 'Yorick',
+  84: 'Akali', 85: 'Kennen', 86: 'Garen', 89: 'Leona', 90: 'Malzahar', 91: 'Talon', 92: 'Riven', 96: 'Kog\'Maw',
+  98: 'Shen', 99: 'Lux', 101: 'Xerath', 102: 'Shyvana', 103: 'Ahri', 104: 'Graves', 105: 'Fizz', 106: 'Volibear',
+  107: 'Rengar', 110: 'Varus', 111: 'Nautilus', 112: 'Viktor', 113: 'Sejuani', 114: 'Fiora', 115: 'Ziggs', 117: 'Lulu',
+  119: 'Draven', 120: 'Hecarim', 121: 'Kha\'Zix', 122: 'Darius', 126: 'Jayce', 127: 'Lisandra', 131: 'Diana', 133: 'Quinn',
+  134: 'Syndra', 136: 'Aurelion Sol', 141: 'Kayn', 142: 'Zoe', 143: 'Zyra', 145: 'Kai\'Sa', 147: 'Seraphine', 150: 'Gnar',
+  154: 'Zac', 157: 'Yasuo', 161: 'Vel\'Koz', 163: 'Taliyah', 164: 'Camille', 201: 'Braum', 202: 'Jhin', 203: 'Kindred',
+  222: 'Jinx', 223: 'Tahm Kench', 234: 'Viego', 235: 'Senna', 236: 'Lucian', 238: 'Zed', 240: 'Kled', 245: 'Ekko',
+  246: 'Qiyana', 254: 'Vi', 266: 'Aatrox', 267: 'Nami', 268: 'Azir', 350: 'Yuumi', 360: 'Samira', 412: 'Thresh',
+  420: 'Illaoi', 421: 'Rek\'Sai', 427: 'Ivern', 429: 'Kalista', 432: 'Bard', 497: 'Rakan', 498: 'Xayah', 516: 'Ornn',
+  517: 'Sylas', 518: 'Neeko', 523: 'Aphelios', 526: 'Rell', 555: 'Pyke', 711: 'Vex', 777: 'Yone', 875: 'Sett',
+  876: 'Lillia', 887: 'Gwen', 888: 'Renata Glasc', 895: 'Nilah', 897: 'K\'Sante', 901: 'Smolder', 902: 'Aurora', 950: 'Naafiri'
+};
+
 // Helper function - use CORS proxy for development
 async function makeRiotAPIRequest(url: string) {
   // Simple rate limiting
@@ -232,7 +256,16 @@ async function makeRiotAPIRequest(url: string) {
       }
     }
 
-    return await response.json();
+    const jsonData = await response.json();
+    
+    // 🔍 DETAILED API RESPONSE LOGGING
+    console.group(`📊 API Response: ${url}`);
+    console.log('🔍 Full Response Data:', JSON.stringify(jsonData, null, 2));
+    console.log('🔍 Response Type:', typeof jsonData);
+    console.log('🔍 Response Keys:', Object.keys(jsonData || {}));
+    console.groupEnd();
+    
+    return jsonData;
   } catch (error) {
     console.error('Direct API request failed:', error);
     throw error;
@@ -267,8 +300,11 @@ export class RiotApiService {
       console.log(`🔍 Looking up account on ${regional}: ${url}`);
       const accountData = await makeRiotAPIRequest(url);
       
+      console.group(`🎮 ACCOUNT LOOKUP RESULT`);
       console.log(`✅ Successfully found Riot account: ${accountData.gameName}#${accountData.tagLine}`);
       console.log(`🆔 PUUID: ${accountData.puuid}`);
+      console.log(`🔍 Complete Account Data:`, JSON.stringify(accountData, null, 2));
+      console.groupEnd();
       
       return {
         puuid: accountData.puuid,
@@ -329,6 +365,12 @@ export class RiotApiService {
   async getEnhancedMatchHistory(puuid: string, tagLine?: string): Promise<MatchData[]> {
     console.log(`🔄 Getting enhanced match history for PUUID: ${puuid}, tagLine: ${tagLine}`);
     
+    // SAFETY CHECK: Verify this is not a mock PUUID being passed to real API
+    if (puuid.startsWith('MOCK_')) {
+      console.warn('⚠️ WARNING: Mock PUUID passed to getEnhancedMatchHistory, returning mock data');
+      return generateMockMatchData();
+    }
+    
     // Get match history first (most important)
     let matches: MatchData[];
     try {
@@ -363,7 +405,6 @@ export class RiotApiService {
       }
       if (summonerData) {
         matches[0].summonerLevel = summonerData.level;
-        matches[0].accountCreationDate = summonerData.accountCreation;
       }
     }
     
@@ -371,8 +412,11 @@ export class RiotApiService {
   }
 
   async getMatchHistory(puuid: string, tagLine?: string): Promise<MatchData[]> {
+    console.log(`🎯 MATCH HISTORY REQUEST: PUUID=${puuid}, TagLine=${tagLine}`);
+    
     // If mock user, return mock data
     if (puuid.startsWith('MOCK_')) {
+      console.log('🎭 Using MOCK data for', puuid);
       const userData = this.mockUsers.get(puuid);
       if (!userData) {
         throw new Error('User not found');
@@ -395,21 +439,33 @@ export class RiotApiService {
         return generateMockMatchData();
       }
 
-      console.log(`📝 Found ${matchIds.length} matches, processing first 10...`);
+      console.log(`📝 Found ${matchIds.length} matches, testing exactly 15 to find the break point...`);
 
-      // Get match details for each match (limit to 5 to avoid rate limits)
-      const matchPromises = matchIds.slice(0, 5).map(async (matchId: string) => {
+      // Get match details for each match (test 15 to find where it breaks)
+      const matchPromises = matchIds.slice(0, 15).map(async (matchId: string, index: number) => {
         const matchUrl = `${regionalApiBase}/lol/match/v5/matches/${matchId}`;
         const matchData = await makeRiotAPIRequest(matchUrl);
         
+        // Find the participant data for this player
         // Find the participant data for this player
         const participant = matchData.info.participants.find(
           (p: any) => p.puuid === puuid
         );
 
         if (!participant) {
-          throw new Error('Player not found in match');
+          console.error(`❌ PUUID MISMATCH in match #${index + 1} (${matchId}):`);
+          console.error(`❌ Looking for: ${puuid}`);
+          console.error(`❌ Available PUUIDs:`, matchData.info.participants.map((p: any) => p.puuid));
+          console.error(`❌ Match participants names:`, matchData.info.participants.map((p: any) => p.summonerName || 'Unknown'));
+          console.error(`❌ This indicates match #${index + 1} belongs to a different player!`);
+          
+          // Skip this match instead of crashing
+          console.warn(`⚠️ Skipping match #${index + 1} due to PUUID mismatch`);
+          return null; // Return null to filter out later
         }
+        
+        // Verify the participant matches our expected player
+        console.log(`✅ Match #${index + 1} (${matchId}): Found ${participant.summonerName} playing ${participant.championName}`);
 
         return {
           gameId: matchData.metadata.matchId,
@@ -458,7 +514,17 @@ export class RiotApiService {
         } as MatchData;
       });
 
-      return await Promise.all(matchPromises);
+      const results = await Promise.all(matchPromises);
+      
+      // Filter out null results (failed matches)
+      const validMatches = results.filter(match => match !== null);
+      
+      console.log(`✅ Successfully processed ${validMatches.length} out of ${matchPromises.length} matches`);
+      if (validMatches.length < matchPromises.length) {
+        console.warn(`⚠️ Skipped ${matchPromises.length - validMatches.length} matches due to PUUID mismatches`);
+      }
+      
+      return validMatches;
     } catch (error) {
       console.error('Failed to fetch match history:', error);
       console.log('Falling back to mock data');
@@ -482,59 +548,87 @@ export class RiotApiService {
       console.log(`🏆 Fetching masteries directly by PUUID from: ${masteriesUrl}`);
       const masteriesData = await makeRiotAPIRequest(masteriesUrl);
       
+      console.group(`🏆 CHAMPION MASTERIES DEBUG`);
       console.log(`✅ Fetched ${masteriesData.length} champion masteries`);
+      console.log(`🔍 First 3 raw mastery objects:`, JSON.stringify(masteriesData.slice(0, 3), null, 2));
+      console.log(`🔍 All champion IDs found:`, masteriesData.map((m: any) => m.championId));
+      console.log(`🔍 Mastery levels:`, masteriesData.map((m: any) => m.championLevel));
+      console.log(`🔍 Mastery points:`, masteriesData.map((m: any) => m.championPoints));
+      console.log(`🔍 Raw mastery object structure:`, Object.keys(masteriesData[0] || {}));
+      console.groupEnd();
       
-      // Convert to our format (you'd need a champion ID to name mapping)
-      return masteriesData.slice(0, 10).map((mastery: any) => ({
-        championId: mastery.championId,
-        championName: `Champion${mastery.championId}`, // Would need champion data mapping
-        championLevel: mastery.championLevel,
-        masteryPoints: mastery.championPoints,
-        lastPlayTime: mastery.lastPlayTime
-      }));
+      // Convert to our format with proper champion names
+      const convertedMasteries = masteriesData.map((mastery: any) => {
+        const championName = CHAMPION_ID_MAP[mastery.championId] || `Unknown Champion ${mastery.championId}`;
+        return {
+          championId: mastery.championId,
+          championName: championName,
+          championLevel: mastery.championLevel,
+          masteryPoints: mastery.championPoints,
+          lastPlayTime: mastery.lastPlayTime
+        };
+      });
+      
+      console.group(`📊 CONVERTED MASTERIES`);
+      console.log(`✅ Converted ALL ${convertedMasteries.length} masteries with proper names:`);
+      console.log(`🔝 Top 5 masteries:`);
+      convertedMasteries.slice(0, 5).forEach((mastery, index) => {
+        console.log(`${index + 1}. ${mastery.championName} (ID: ${mastery.championId}) - Level ${mastery.championLevel} - ${mastery.masteryPoints.toLocaleString()} points`);
+      });
+      console.log(`... and ${convertedMasteries.length - 5} more champions`);
+      console.groupEnd();
+      
+      return convertedMasteries;
     } catch (error) {
       console.error('❌ Failed to fetch champion masteries:', error);
       throw error; // Re-throw to see the actual error
     }
   }
 
-  async getSummonerData(puuid: string, tagLine?: string): Promise<{ level: number; accountCreation: number } | null> {
+  async getSummonerData(puuid: string, tagLine?: string): Promise<{ level: number } | null> {
     // If mock user, return mock data
     if (puuid.startsWith('MOCK_')) {
       return {
-        level: Math.floor(Math.random() * 300) + 30,
-        accountCreation: Date.now() - Math.random() * 5 * 365 * 24 * 60 * 60 * 1000
+        level: Math.floor(Math.random() * 300) + 30
       };
     }
 
-    try {
-      // Get correct region for this player
-      const { region } = tagLine ? getServerFromTag(tagLine) : { region: 'na1' };
-      
-      const summonerUrl = `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
-      console.log(`🔍 Fetching summoner data from: ${summonerUrl}`);
-      const summonerData = await makeRiotAPIRequest(summonerUrl);
-      
-      console.log('📋 Summoner data response:', summonerData);
-      
-      if (!summonerData || summonerData.summonerLevel === undefined) {
-        console.error('❌ Summoner data missing or no level found:', summonerData);
-        throw new Error(`Failed to get summoner data for PUUID: ${puuid}`);
+    // Try different regions since PUUID might be from different server than tagLine suggests
+    const regionsToTry = [
+      // Start with region from tagLine if available
+      tagLine ? getServerFromTag(tagLine).region : 'euw1',
+      // Then try other common regions
+      'euw1', 'eune1', 'na1', 'kr', 'br1', 'la1', 'la2', 'oc1', 'ru', 'tr1', 'jp1'
+    ];
+    
+    // Remove duplicates
+    const uniqueRegions = [...new Set(regionsToTry)];
+    
+    for (const region of uniqueRegions) {
+      try {
+        const summonerUrl = `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
+        console.log(`🔍 Trying summoner data from ${region}: ${summonerUrl}`);
+        const summonerData = await makeRiotAPIRequest(summonerUrl);
+        
+        if (summonerData && summonerData.summonerLevel !== undefined) {
+          console.log(`✅ Found summoner data on ${region}: Level ${summonerData.summonerLevel}`);
+          
+          return {
+            level: summonerData.summonerLevel
+          };
+        }
+      } catch (error) {
+        console.log(`❌ Region ${region} failed, trying next...`);
+        continue;
       }
-      
-      console.log(`✅ Fetched summoner data: Level ${summonerData.summonerLevel}`);
-      
-      return {
-        level: summonerData.summonerLevel,
-        accountCreation: summonerData.revisionDate // Approximate account creation
-      };
-    } catch (error) {
-      console.error('❌ Failed to fetch summoner data:', error);
-      throw error; // Re-throw to see the actual error
     }
+    
+    throw new Error(`Summoner not found on any region for PUUID: ${puuid}`);
   }
 
   async createPlayer(account: RiotAccount): Promise<Player> {
+    console.log(`🎮 CREATING PLAYER: ${account.gameName}#${account.tagLine} (PUUID: ${account.puuid})`);
+    
     // Use enhanced match history which includes all additional data
     const matches = await this.getEnhancedMatchHistory(account.puuid, account.tagLine);
     
@@ -553,9 +647,15 @@ export class RiotApiService {
         console.log(`🌍 Trying ${region} server for summoner data...`);
         
         const summonerData = await makeRiotAPIRequest(summonerUrl);
-        console.log(`✅ Got summoner data:`, summonerData);
+        
+        console.group(`🎮 PLAYER CREATION SUMMONER DATA`);
+        console.log(`✅ Got summoner data:`, JSON.stringify(summonerData, null, 2));
         console.log(`🔍 Summoner ID check: summonerData.id = ${summonerData.id}`);
         console.log(`🔍 All summoner data keys:`, Object.keys(summonerData));
+        console.log(`🔍 Profile Icon ID: ${summonerData.profileIconId}`);
+        console.log(`🔍 Summoner Level: ${summonerData.summonerLevel}`);
+        console.log(`🔍 Revision Date: ${summonerData.revisionDate} (${new Date(summonerData.revisionDate)})`);
+        console.groupEnd();
         
         const iconId = summonerData.profileIconId;
         
@@ -684,6 +784,7 @@ export class RiotApiService {
       return null;
     }
   }
+
 }
 
 export const riotApi = RiotApiService.getInstance();

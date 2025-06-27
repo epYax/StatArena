@@ -4,9 +4,10 @@ import StatsArenaLogo from './StatsArenaLogo';
 interface MainMenuProps {
   player: Player;
   onFindBattle: () => void;
+  onAdminPanel: () => void;
 }
 
-export default function MainMenu({ player, onFindBattle }: MainMenuProps) {
+export default function MainMenu({ player, onFindBattle, onAdminPanel }: MainMenuProps) {
   const winRate = player.wins + player.losses > 0 
     ? Math.round((player.wins / (player.wins + player.losses)) * 100) 
     : 0;
@@ -231,15 +232,17 @@ export default function MainMenu({ player, onFindBattle }: MainMenuProps) {
               </div>
             </button>
             
-            <button className="h-16 league-button font-semibold text-league-gold-light text-base font-league-sans
+            <button 
+              onClick={onAdminPanel}
+              className="h-16 league-button font-semibold text-league-gold-light text-base font-league-sans
                              transition-all duration-300 hover:text-league-gold">
               <div className="flex items-center justify-center relative z-10">
-                <div className="w-6 h-6 bg-league-gold rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-4 h-4 text-league-dark" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span>PROFILE & BADGES</span>
+                <span>ADMIN DEBUG</span>
               </div>
             </button>
           </div>

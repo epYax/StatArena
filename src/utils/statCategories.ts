@@ -262,18 +262,6 @@ const STAT_CATEGORIES: StatCategory[] = [
     higherWins: true,
     weight: 3
   },
-  {
-    id: 'account_age',
-    name: 'Account Age',
-    description: 'Days since account creation - experience matters',
-    getValue: (matches: MatchData[]) => {
-      const creationDate = matches[0]?.accountCreationDate;
-      if (!creationDate) return 0;
-      return Math.floor((Date.now() - creationDate) / (1000 * 60 * 60 * 24));
-    },
-    higherWins: true,
-    weight: 2
-  },
 
   // Creative Match Stats
   {

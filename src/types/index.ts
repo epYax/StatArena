@@ -67,7 +67,6 @@ export interface MatchData {
   
   // Summoner data (attached to first match for easy access)
   summonerLevel?: number;
-  accountCreationDate?: number;
   championMasteries?: ChampionMastery[];
 }
 
