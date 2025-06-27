@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { StatComparison, StatCategory } from '../../types';
 import { STAT_CATEGORIES } from '../../utils/statCategories';
+import LoLIcon from '../common/LoLIcon';
 
 interface StatSlotMachineProps {
   isSpinning: boolean;
@@ -59,7 +60,7 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
         // All reels stopped
         setTimeout(() => {
           setReelStates('stopped');
-          console.log('✅ All reels stopped, notifying parent');
+          console.log('All reels stopped, notifying parent');
           if (onSpinComplete) {
             onSpinComplete(choices);
           }
@@ -103,7 +104,7 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
             ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
             : 'bg-red-500/20 text-red-400 border border-red-500/30'
         }`}>
-          {selectedStat.statType === 'higher_wins' ? '⬆️ Higher Wins' : '⬇️ Lower Wins'}
+          <LoLIcon type={selectedStat.statType === 'higher_wins' ? 'higher' : 'lower'} size=\"xs\" className=\"mr-1\" />\n          {selectedStat.statType === 'higher_wins' ? 'Higher Wins' : 'Lower Wins'}
         </span>
       </div>
     );
@@ -125,12 +126,13 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
             <div className="text-gray-300 text-xs mb-2">
               {hasChoice.description}
             </div>
-            <div className={`text-xs px-2 py-1 rounded-full inline-block ${
+            <div className={`text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 ${
               hasChoice.higherWins 
                 ? 'bg-green-500/30 text-green-300' 
                 : 'bg-red-500/30 text-red-300'
             }`}>
-              {hasChoice.higherWins ? '📈 Higher' : '📉 Lower'}
+              <LoLIcon type={hasChoice.higherWins ? 'higher' : 'lower'} size="xs" />
+              {hasChoice.higherWins ? 'Higher' : 'Lower'}
             </div>
           </div>
         </div>
@@ -142,7 +144,9 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
       return (
         <div className="h-full flex items-center justify-center">
           <div className="text-center">
-            <div className="text-4xl mb-4 animate-spin">🎰</div>
+            <div className="mb-4 flex justify-center">
+              <LoLIcon type="slot-machine" size="xl" className="animate-spin" />
+            </div>
             <div className="text-lol-gold font-bold animate-pulse">
               SPINNING...
             </div>
@@ -155,7 +159,9 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center text-gray-400">
-          <div className="text-2xl mb-2">🎯</div>
+          <div className="mb-2 flex justify-center">
+            <LoLIcon type="target" size="lg" />
+          </div>
           <div className="text-sm">Ready</div>
         </div>
       </div>
@@ -169,8 +175,10 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
         <div className="bg-black rounded-lg p-6">
           
           {/* Title */}
-          <h2 className="text-xl font-bold text-lol-gold mb-6 font-['Orbitron']">
-            🎰 STAT ROULETTE 🎰
+          <h2 className="text-xl font-bold text-lol-gold mb-6 font-['Orbitron'] flex items-center justify-center gap-3">
+            <LoLIcon type="slot-machine" size="md" />
+            STAT ROULETTE
+            <LoLIcon type="slot-machine" size="md" />
           </h2>
 
           {/* Three Simplified Slot Machines */}
@@ -205,8 +213,14 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
                 
                 {/* Status label */}
                 <div className="text-center mt-2">
-                  <div className="text-lol-gold text-sm font-semibold">
-                    {displayChoices[reelIndex] ? '✅ Stopped' : reelStates === 'spinning' ? '🎰 Spinning' : '⏳ Ready'}
+                  <div className="text-lol-gold text-sm font-semibold flex items-center justify-center gap-1">
+                    {displayChoices[reelIndex] ? (
+                      <><LoLIcon type="check" size="xs" /> Stopped</>
+                    ) : reelStates === 'spinning' ? (
+                      <><LoLIcon type="slot-machine" size="xs" /> Spinning</>
+                    ) : (
+                      <><LoLIcon type="hourglass" size="xs" /> Ready</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -215,9 +229,14 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
 
           {/* Status Display */}
           <div className="bg-black/60 rounded-lg p-4 border border-lol-gold/30">
-            <div className="text-lg font-bold text-lol-gold mb-2">
-              {reelStates === 'spinning' ? '🎰 Rolling for options...' : 
-               reelStates === 'stopped' ? '🎯 Choose your stat!' : '⏳ Ready to roll'}
+            <div className="text-lg font-bold text-lol-gold mb-2 flex items-center justify-center gap-2">
+              {reelStates === 'spinning' ? (
+                <><LoLIcon type="slot-machine" size="sm" /> Rolling for options...</>
+              ) : reelStates === 'stopped' ? (
+                <><LoLIcon type="target" size="sm" /> Choose your stat!</>
+              ) : (
+                <><LoLIcon type="hourglass" size="sm" /> Ready to roll</>
+              )}
             </div>
             <p className="text-gray-300 text-sm">
               {reelStates === 'spinning' ? 'Watch the reels stop one by one!' : 

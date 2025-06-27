@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { StatCategory, MatchData } from '../../types';
+import LoLIcon from '../common/LoLIcon';
 
 interface FlashyStatAnimationProps {
   statCategory: StatCategory;
@@ -51,11 +52,11 @@ export default function FlashyStatAnimation({
       case 'total_gold_last_5':
         return `${(match.goldEarned / 1000).toFixed(1)}k Gold`;
       case 'perfect_games':
-        return match.deaths === 0 ? '0 Deaths ✨' : `${match.deaths} Deaths`;
+        return match.deaths === 0 ? '0 Deaths (Perfect)' : `${match.deaths} Deaths`;
       case 'aram_cs':
         return match.gameMode === 'ARAM' ? `${match.cs} CS (ARAM)` : `${match.cs} CS`;
       case 'win_streak':
-        return match.win ? 'Win ✅' : 'Loss ❌';
+        return match.win ? 'Win (W)' : 'Loss (L)';
       default:
         return `${match.kills}/${match.deaths}/${match.assists}`;
     }
@@ -160,11 +161,21 @@ export default function FlashyStatAnimation({
 
   const getPhaseText = () => {
     switch (currentPhase) {
-      case 'intro': return '📊 Analyzing Stats...';
-      case 'data_flash': return '⚡ Processing Data...';
-      case 'calculating': return '🔥 CALCULATING...';
-      case 'reveal': return '✨ RESULTS!';
+      case 'intro': return 'Analyzing Stats...';
+      case 'data_flash': return 'Processing Data...';
+      case 'calculating': return 'CALCULATING...';
+      case 'reveal': return 'RESULTS!';
       default: return '';
+    }
+  };
+
+  const getPhaseIcon = () => {
+    switch (currentPhase) {
+      case 'intro': return 'stats';
+      case 'data_flash': return 'lightning';
+      case 'calculating': return 'fire';
+      case 'reveal': return 'sparkle';
+      default: return 'stats';
     }
   };
 
@@ -220,9 +231,10 @@ export default function FlashyStatAnimation({
 
       {/* Header */}
       <div className="text-center mb-6">
-        <h2 className={`text-xl font-bold transition-all duration-500 ${
+        <h2 className={`text-xl font-bold transition-all duration-500 flex items-center justify-center gap-2 ${
           currentPhase === 'reveal' ? 'text-lol-gold animate-pulse text-2xl' : 'text-white'
         }`}>
+          <LoLIcon type={getPhaseIcon() as any} size="sm" />
           {getPhaseText()}
         </h2>
         <div className="text-base text-gray-300 mt-1">
@@ -268,8 +280,9 @@ export default function FlashyStatAnimation({
             </div>
             
             {currentPhase === 'reveal' && (
-              <div className="text-sm text-gray-400 mt-2">
-                {statCategory.higherWins ? '⬆️ Higher Wins' : '⬇️ Lower Wins'}
+              <div className="text-sm text-gray-400 mt-2 flex items-center justify-center gap-1">
+                <LoLIcon type={statCategory.higherWins ? 'higher' : 'lower'} size="xs" />
+                {statCategory.higherWins ? 'Higher Wins' : 'Lower Wins'}
               </div>
             )}
           </div>
@@ -311,8 +324,9 @@ export default function FlashyStatAnimation({
             </div>
             
             {currentPhase === 'reveal' && (
-              <div className="text-sm text-gray-400 mt-2">
-                {statCategory.higherWins ? '⬆️ Higher Wins' : '⬇️ Lower Wins'}
+              <div className="text-sm text-gray-400 mt-2 flex items-center justify-center gap-1">
+                <LoLIcon type={statCategory.higherWins ? 'higher' : 'lower'} size="xs" />
+                {statCategory.higherWins ? 'Higher Wins' : 'Lower Wins'}
               </div>
             )}
           </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LoLIcon from './LoLIcon';
 
 export default function Matchmaking() {
   const [dots, setDots] = useState('');
@@ -33,11 +34,11 @@ export default function Matchmaking() {
         <div className="relative w-32 h-32 mx-auto mb-8">
           <div className="absolute inset-0 rounded-full border-4 border-lol-gold animate-spin">
             <div className="absolute -top-2 -right-2 w-8 h-8 bg-lol-gold rounded-full flex items-center justify-center">
-              <span className="text-black text-sm">⚔️</span>
+              <LoLIcon type="battle" size="xs" className="text-black" />
             </div>
           </div>
           <div className="absolute inset-4 bg-black/40 rounded-full flex items-center justify-center">
-            <span className="text-4xl">🎮</span>
+            <LoLIcon type="target" size="xl" />
           </div>
         </div>
 

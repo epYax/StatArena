@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import LoLIcon from './LoLIcon';
 
 interface Props {
   children: ReactNode;
@@ -36,7 +37,9 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
           <div className="max-w-md w-full mx-4">
             <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-8 text-center">
-              <div className="text-6xl mb-4">⚠️</div>
+              <div className="mb-4 flex justify-center">
+                <LoLIcon type="close" size="2xl" className="text-red-400" />
+              </div>
               <h2 className="text-2xl font-bold text-white mb-4 font-['Orbitron']">
                 Battle Error
               </h2>

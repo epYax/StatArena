@@ -1,4 +1,5 @@
 import type { Battle } from '../../types';
+import LoLIcon from '../common/LoLIcon';
 
 interface ResultsScreenProps {
   battle: Battle;
@@ -52,19 +53,25 @@ export default function ResultsScreen({ battle, onReturnToMenu }: ResultsScreenP
         {/* Battle Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-black/40 rounded-lg p-6 border border-lol-light-blue/30">
-            <div className="text-3xl text-lol-light-blue mb-2">⚔️</div>
+            <div className="mb-2 flex justify-center">
+              <LoLIcon type="battle" size="lg" className="text-lol-light-blue" />
+            </div>
             <div className="text-2xl font-bold text-white">{roundsPlayed}</div>
             <div className="text-gray-400">Rounds Played</div>
           </div>
           
           <div className="bg-black/40 rounded-lg p-6 border border-red-500/30">
-            <div className="text-3xl text-red-400 mb-2">💥</div>
+            <div className="mb-2 flex justify-center">
+              <LoLIcon type="damage" size="lg" className="text-red-400" />
+            </div>
             <div className="text-2xl font-bold text-white">{avgDamage}</div>
             <div className="text-gray-400">Avg Damage/Round</div>
           </div>
           
           <div className="bg-black/40 rounded-lg p-6 border border-lol-gold/30">
-            <div className="text-3xl text-lol-gold mb-2">⏱️</div>
+            <div className="mb-2 flex justify-center">
+              <LoLIcon type="hourglass" size="lg" className="text-lol-gold" />
+            </div>
             <div className="text-2xl font-bold text-white">
               {Math.floor(roundsPlayed * 15)}s
             </div>
@@ -96,8 +103,11 @@ export default function ResultsScreen({ battle, onReturnToMenu }: ResultsScreenP
                   </div>
                   <div className="text-red-400 text-sm">-{round.damage} HP</div>
                 </div>
-                <div className={`text-lg ${round.statComparison.winner === 1 ? 'text-green-400' : 'text-blue-400'}`}>
-                  {round.statComparison.winner === 1 ? '👤' : '🤖'}
+                <div className={`text-lg ${round.statComparison.winner === 1 ? 'text-green-400' : 'text-blue-400'} flex justify-center`}>
+                  {round.statComparison.winner === 1 ? 
+                    <LoLIcon type="crown" size="sm" /> : 
+                    <LoLIcon type="robot" size="sm" />
+                  }
                 </div>
               </div>
             ))}

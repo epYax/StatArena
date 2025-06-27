@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { StatCategory } from '../../types';
+import LoLIcon from '../common/LoLIcon';
 
 interface StatSelectionProps {
   choices: StatCategory[];
@@ -82,8 +83,10 @@ export default function StatSelection({
     <div className="max-w-4xl mx-auto p-6">
       {/* Header with Timer */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white mb-4 font-['Orbitron']">
-          ⚔️ Battle Stat Selection ⚔️
+        <h2 className="text-3xl font-bold text-white mb-4 font-['Orbitron'] flex items-center justify-center gap-3">
+          <LoLIcon type="battle" size="md" />
+          Battle Stat Selection
+          <LoLIcon type="battle" size="md" />
         </h2>
         
         {/* Timer Display */}
@@ -130,14 +133,14 @@ export default function StatSelection({
             {/* Auto-select indicator for middle option */}
             {index === 1 && !selectedChoice && timeLeft <= 5 && (
               <div className="absolute -top-2 -left-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-black font-bold text-sm">⏰</span>
+                <LoLIcon type="hourglass" size="xs" className="text-black" />
               </div>
             )}
 
             {/* Selection indicator */}
             {selectedChoice?.id === stat.id && (
               <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-br from-lol-gold to-yellow-600 rounded-full flex items-center justify-center animate-pulse shadow-lg">
-                <span className="text-black font-bold text-xl">⚡</span>
+                <LoLIcon type="lightning" size="sm" className="text-black" />
               </div>
             )}
 
@@ -158,7 +161,8 @@ export default function StatSelection({
                   : 'bg-red-900/30 text-red-300 border border-red-500/30'
                 }
               `}>
-                {stat.higherWins ? '📈 Higher Wins' : '📉 Lower Wins'}
+                <LoLIcon type={stat.higherWins ? 'higher' : 'lower'} size="xs" className="mr-1" />
+                {stat.higherWins ? 'Higher Wins' : 'Lower Wins'}
               </div>
             </div>
 
@@ -186,13 +190,14 @@ export default function StatSelection({
           {isConfirming ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-2"></div>
-              ⚡ Locking in choice...
+              <LoLIcon type="lightning" size="xs" className="mr-1" />
+              Locking in choice...
             </div>
           ) : selectedChoice ? (
             <div className="flex items-center justify-center">
-              <span className="mr-2">⚔️</span>
+              <LoLIcon type="battle" size="sm" className="mr-2" />
               Battle with {selectedChoice.name}
-              <span className="ml-2">⚔️</span>
+              <LoLIcon type="battle" size="sm" className="ml-2" />
             </div>
           ) : (
             'Select a Stat to Continue'
@@ -205,12 +210,13 @@ export default function StatSelection({
         <p className="text-gray-400 text-sm">
           {timeLeft > 5 
             ? "Choose the stat you think gives you the best advantage!" 
-            : "⚠️ Hurry! Middle option will be auto-selected if time runs out!"
+            : "Hurry! Middle option will be auto-selected if time runs out!"
           }
         </p>
         {timeLeft <= 5 && (
-          <p className="text-yellow-400 text-xs mt-2 animate-pulse">
-            💡 Default choice (Option 2) highlighted
+          <p className="text-yellow-400 text-xs mt-2 animate-pulse flex items-center justify-center gap-1">
+            <LoLIcon type="sparkle" size="xs" />
+            Default choice (Option 2) highlighted
           </p>
         )}
       </div>

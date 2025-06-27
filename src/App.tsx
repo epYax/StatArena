@@ -30,11 +30,11 @@ function App() {
       }));
     } catch (error) {
       console.error('Login with real API failed:', error);
-      console.log('🎮 Switching to demo mode with mock data...');
+      console.log('Switching to demo mode with mock data...');
       
       // If real API fails but user provided credentials, try fallback to mock with their name
       if (gameName && tagLine) {
-        console.log('📝 Creating personalized demo account...');
+        console.log('Creating personalized demo account...');
         try {
           const mockAccount = await riotApi.createMockAccountWithName(gameName, tagLine);
           const player = await riotApi.createPlayer(mockAccount);
@@ -66,7 +66,7 @@ function App() {
       } catch (finalError) {
         console.error('All login methods failed:', finalError);
         // Create a basic fallback player
-        console.log('⚠️ Creating basic demo player...');
+        console.log('Creating basic demo player...');
         const fallbackPlayer: Player = {
           id: 'FALLBACK_PLAYER',
           puuid: 'FALLBACK_PLAYER',

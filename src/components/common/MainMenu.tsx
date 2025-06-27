@@ -12,7 +12,7 @@ export default function MainMenu({ player, onFindBattle, onAdminPanel }: MainMen
     ? Math.round((player.wins / (player.wins + player.losses)) * 100) 
     : 0;
 
-  console.log(`🖥️ MainMenu received player with rank: ${player.rank}`);
+  console.log(`MainMenu received player with rank: ${player.rank}`);
 
   // Function to get rank emblem URL
   const getRankEmblem = (rank?: string) => {
@@ -33,7 +33,7 @@ export default function MainMenu({ player, onFindBattle, onAdminPanel }: MainMen
 
     // const division = divisionMap[rankDivision] || '1';
 
-    console.log(`🖥️ MainMenu received player with rank: ${rankTier}`);
+    console.log(`MainMenu received player with rank: ${rankTier}`);
     
     // Special cases for apex tiers
     if (['challenger', 'grandmaster', 'master', 'emerald', 'iron', 'bronze', 'silver', 'gold', 'platinum', 'diamond'].includes(rankTier)) {

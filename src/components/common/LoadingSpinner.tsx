@@ -1,3 +1,5 @@
+import LoLIcon from './LoLIcon';
+
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   message?: string;
@@ -54,18 +56,18 @@ export function BattleLoading({ phase }: BattleLoadingProps) {
     applying_damage: 'Applying damage...'
   };
 
-  const icons = {
-    loading_data: '📡',
-    generating_stats: '🎲',
-    calculating: '🧮',
-    applying_damage: '⚔️'
+  const iconTypes = {
+    loading_data: 'search' as const,
+    generating_stats: 'dice' as const,
+    calculating: 'calculate' as const,
+    applying_damage: 'battle' as const
   };
 
   return (
     <div className="flex items-center justify-center h-full">
       <div className="text-center max-w-sm mx-auto">
-        <div className="text-6xl mb-4 animate-bounce">
-          {icons[phase]}
+        <div className="mb-4 animate-bounce flex justify-center">
+          <LoLIcon type={iconTypes[phase]} size="2xl" />
         </div>
         <div className="w-12 h-12 border-4 border-lol-gold/30 border-t-lol-gold rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-lol-gold-light text-lg animate-pulse">

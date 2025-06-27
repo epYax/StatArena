@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LoLIcon from '../common/LoLIcon';
 
 interface CoinFlipProps {
   player1Name: string;
@@ -45,8 +46,9 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
     <div className="max-w-2xl mx-auto text-center p-8">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-white mb-4 font-['Orbitron']">
-          🪙 Coin Flip
+        <h2 className="text-3xl font-bold text-white mb-4 font-['Orbitron'] flex items-center justify-center gap-2">
+          <LoLIcon type="coin" size="md" />
+          Coin Flip
         </h2>
         <p className="text-lol-light-blue text-lg">
           Determining who chooses the stat first...
@@ -59,14 +61,18 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
         <div className={`text-center p-4 rounded-lg border-2 transition-all duration-500 ${
           result === 1 ? 'border-lol-gold bg-lol-gold/10 scale-105' : 'border-gray-600'
         }`}>
-          <div className="text-2xl mb-2">👑</div>
+          <div className="mb-2 flex justify-center">
+            <LoLIcon type="crown" size="lg" />
+          </div>
           <div className="text-white font-semibold">{player1Name}</div>
         </div>
         
         <div className={`text-center p-4 rounded-lg border-2 transition-all duration-500 ${
           result === 2 ? 'border-lol-gold bg-lol-gold/10 scale-105' : 'border-gray-600'
         }`}>
-          <div className="text-2xl mb-2">👑</div>
+          <div className="mb-2 flex justify-center">
+            <LoLIcon type="crown" size="lg" />
+          </div>
           <div className="text-white font-semibold">{player2Name}</div>
         </div>
       </div>
@@ -94,7 +100,9 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
                   className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
                 />
                 {result === 1 && showResult && (
-                  <div className="absolute -top-2 -right-2 text-2xl animate-bounce">👑</div>
+                  <div className="absolute -top-2 -right-2 animate-bounce">
+                    <LoLIcon type="crown" size="lg" />
+                  </div>
                 )}
               </div>
             </div>
@@ -113,7 +121,9 @@ export default function CoinFlip({ player1Name, player2Name, player1Icon, player
                   className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
                 />
                 {result === 2 && showResult && (
-                  <div className="absolute -top-2 -right-2 text-2xl animate-bounce">👑</div>
+                  <div className="absolute -top-2 -right-2 animate-bounce">
+                    <LoLIcon type="crown" size="lg" />
+                  </div>
                 )}
               </div>
             </div>

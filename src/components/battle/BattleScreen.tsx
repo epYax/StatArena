@@ -9,6 +9,7 @@ import RoundResult from './RoundResult';
 import FlashyStatAnimation from './FlashyStatAnimation';
 import StatSelection from './StatSelection';
 import CoinFlip from './CoinFlip';
+import LoLIcon from '../common/LoLIcon';
 
 interface BattleScreenProps {
   battle: Battle;
@@ -20,54 +21,54 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
 
   const getRoundStatus = () => {
     if (!state.isMatchDataLoaded) {
-      return '🔍 Analyzing match histories and champion masteries...';
+      return 'Analyzing match histories and champion masteries...';
     }
     
     switch (state.battlePhase) {
       case BATTLE_PHASES.COIN_FLIP:
-        return '🪙 Ancient coin decides who strikes first...';
+        return 'Ancient coin decides who strikes first...';
       case BATTLE_PHASES.SLOT_SPINNING:
-        return '🎰 The Rift\'s magic reveals stat categories...';
+        return 'The Rift\'s magic reveals stat categories...';
       case BATTLE_PHASES.SLOT_SLOWING:
-        return '✨ Statistical destinies taking shape...';
+        return 'Statistical destinies taking shape...';
       case BATTLE_PHASES.PLAYER_CHOICE:
         const playerName = state.currentPlayerTurn === 1 
           ? state.currentBattle.player1.summonerName.split('#')[0]
           : state.currentBattle.player2.summonerName.split('#')[0];
-        return `⚡ ${playerName} weighing their statistical advantage...`;
+        return `${playerName} weighing their statistical advantage...`;
       case BATTLE_PHASES.WAITING_FOR_OPPONENT:
-        return '🤖 AI opponent analyzing optimal strategy...';
+        return 'AI opponent analyzing optimal strategy...';
       case BATTLE_PHASES.STAT_SELECTION:
-        return '⚔️ Battle preparations underway...';
+        return 'Battle preparations underway...';
       case BATTLE_PHASES.ANTICIPATION:
         if (state.showCalculationAnimation) {
-          return '🧮 Hextech algorithms processing match data...';
+          return 'Hextech algorithms processing match data...';
         }
-        return '🔮 The numbers don\'t lie - revealing truth...';
+        return 'The numbers don\'t lie - revealing truth...';
       case BATTLE_PHASES.REVEAL:
         const comparison = state.currentStatComparison;
         if (comparison) {
-          return `📊 ${comparison.category}: ${comparison.player1Value} vs ${comparison.player2Value}`;
+          return `${comparison.category}: ${comparison.player1Value} vs ${comparison.player2Value}`;
         }
-        return '🏆 Statistical supremacy determined...';
+        return 'Statistical supremacy determined...';
       case BATTLE_PHASES.DAMAGE:
         const winner = state.currentStatComparison?.winner;
         if (winner === 'draw') {
-          return '🤝 Perfectly matched - no damage dealt!';
+          return 'Perfectly matched - no damage dealt!';
         } else if (winner === 1) {
-          return '💥 Player 1 strikes with superior stats!';
+          return 'Player 1 strikes with superior stats!';
         } else if (winner === 2) {
-          return '💥 Player 2 dominates with better performance!';
+          return 'Player 2 dominates with better performance!';
         }
-        return '⚡ Statistical warfare in progress...';
+        return 'Statistical warfare in progress...';
       case BATTLE_PHASES.NEXT_ROUND:
         const roundNum = state.currentBattle.currentRound + 1;
         if (roundNum >= 5) {
-          return '🏁 Final calculations - determining ultimate victor...';
+          return 'Final calculations - determining ultimate victor...';
         }
-        return `🔄 Round ${roundNum + 1} approaches - new challenges await...`;
+        return `Round ${roundNum + 1} approaches - new challenges await...`;
       default:
-        return '⚔️ The battle rages on...';
+        return 'The battle rages on...';
     }
   };
 
@@ -121,7 +122,21 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
               </div>
               <div className="text-center">
                 <div className="text-xs text-gray-400">Battle Status</div>
-                <div className="text-sm text-lol-gold font-semibold">{getRoundStatus()}</div>
+                <div className="text-sm text-lol-gold font-semibold flex items-center justify-center gap-2">
+                  {/* Status Icon */}
+                  {state.battlePhase === BATTLE_PHASES.COIN_FLIP && <LoLIcon type="coin" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.SLOT_SPINNING && <LoLIcon type="slot-machine" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.SLOT_SLOWING && <LoLIcon type="sparkle" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE && <LoLIcon type="lightning" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.WAITING_FOR_OPPONENT && <LoLIcon type="robot" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.STAT_SELECTION && <LoLIcon type="battle" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.ANTICIPATION && <LoLIcon type="calculate" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.REVEAL && <LoLIcon type="stats" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.DAMAGE && <LoLIcon type="damage" size="sm" />}
+                  {state.battlePhase === BATTLE_PHASES.NEXT_ROUND && <LoLIcon type="refresh" size="sm" />}
+                  {!state.isMatchDataLoaded && <LoLIcon type="search" size="sm" />}
+                  <span>{getRoundStatus()}</span>
+                </div>
                 {/* Phase Progress Bar */}
                 <div className="mt-2 w-48 mx-auto">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
@@ -173,10 +188,10 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                     </div>
                   </div>
                   {state.currentPlayerTurn === 1 && (
-                    <div className="text-lol-gold animate-pulse text-sm">⚡</div>
+                    <LoLIcon type="lightning" size="sm" className="text-lol-gold animate-pulse" />
                   )}
                   {state.playerDamageAnimation.player1 && (
-                    <div className="text-red-500 animate-bounce text-sm">💥</div>
+                    <LoLIcon type="damage" size="sm" className="animate-bounce" />
                   )}
                 </div>
               </div>
@@ -199,10 +214,10 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
               }`}>
                 <div className="flex items-center space-x-2">
                   {state.currentPlayerTurn === 2 && (
-                    <div className="text-lol-gold animate-pulse text-sm">⚡</div>
+                    <LoLIcon type="lightning" size="sm" className="text-lol-gold animate-pulse" />
                   )}
                   {state.playerDamageAnimation.player2 && (
-                    <div className="text-red-500 animate-bounce text-sm">💥</div>
+                    <LoLIcon type="damage" size="sm" className="animate-bounce" />
                   )}
                   <div className="flex-1">
                     <div className="text-white font-semibold text-xs truncate text-right">
@@ -306,7 +321,9 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                 ) : (
                   /* Player 2's turn - show waiting screen while AI decides */
                   <div className="text-center max-w-2xl mx-auto">
-                    <div className="text-6xl mb-6 animate-bounce">🤖</div>
+                    <div className="mb-6 flex justify-center">
+                      <LoLIcon type="robot" size="2xl" className="animate-bounce" />
+                    </div>
                     <h2 className="text-3xl font-bold text-white mb-4 font-['Orbitron']">
                       {state.currentBattle.player2.summonerName} is choosing...
                     </h2>
@@ -323,8 +340,9 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                           <div className="w-2 h-2 bg-lol-gold rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                         </div>
                       </div>
-                      <div className="text-gray-400 text-sm">
-                        🧠 Analyzing stat advantages...
+                      <div className="text-gray-400 text-sm flex items-center justify-center gap-2">
+                        <LoLIcon type="calculate" size="sm" />
+                        Analyzing stat advantages...
                       </div>
                     </div>
 
@@ -334,10 +352,11 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                         <div key={stat.id} className="bg-gray-800 rounded-lg p-4 border border-gray-600">
                           <div className="text-white font-bold text-sm mb-2">{stat.name}</div>
                           <div className="text-gray-400 text-xs">{stat.description}</div>
-                          <div className={`mt-2 text-xs px-2 py-1 rounded-full inline-block ${
+                          <div className={`mt-2 text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 ${
                             stat.higherWins ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
                           }`}>
-                            {stat.higherWins ? '📈 Higher' : '📉 Lower'}
+                            <LoLIcon type={stat.higherWins ? 'higher' : 'lower'} size="xs" />
+                            {stat.higherWins ? 'Higher' : 'Lower'}
                           </div>
                         </div>
                       ))}
@@ -383,8 +402,10 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                           
                           {/* Content */}
                           <div className="relative z-10">
-                            <div className="text-xs text-lol-gold font-bold mb-2 tracking-widest uppercase">
-                              ⚔️ BATTLE CATEGORY ⚔️
+                            <div className="text-xs text-lol-gold font-bold mb-2 tracking-widest uppercase flex items-center justify-center gap-2">
+                              <LoLIcon type="battle" size="xs" />
+                              BATTLE CATEGORY
+                              <LoLIcon type="battle" size="xs" />
                             </div>
                             <div className="text-2xl font-bold text-white mb-3 leading-tight font-['Orbitron'] drop-shadow-lg">
                               {state.selectedStat.name}
@@ -399,7 +420,8 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                                 ? 'bg-green-500/30 text-green-300 border-green-400/60 shadow-green-400/20' 
                                 : 'bg-red-500/30 text-red-300 border-red-400/60 shadow-red-400/20'
                             } shadow-lg`}>
-                              {state.selectedStat.higherWins ? '📈 HIGHER WINS' : '📉 LOWER WINS'}
+                              <LoLIcon type={state.selectedStat.higherWins ? 'higher' : 'lower'} size="sm" />
+                              {state.selectedStat.higherWins ? 'HIGHER WINS' : 'LOWER WINS'}
                             </div>
                             
                             {/* Show comparison values during reveal/damage phases */}
@@ -411,7 +433,9 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                                     <div className="text-blue-400 text-2xl font-bold drop-shadow">{state.currentStatComparison.player1Value}</div>
                                     <div className="text-xs text-blue-300">Player 1</div>
                                   </div>
-                                  <div className="text-lol-gold text-3xl font-bold animate-pulse">⚔️</div>
+                                  <div className="text-lol-gold animate-pulse flex justify-center">
+                                    <LoLIcon type="vs" size="lg" />
+                                  </div>
                                   <div className="text-center">
                                     <div className="text-red-400 text-2xl font-bold drop-shadow">{state.currentStatComparison.player2Value}</div>
                                     <div className="text-xs text-red-300">Player 2</div>
@@ -421,14 +445,18 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                                 {/* Winner announcement */}
                                 <div className="mt-4">
                                   {state.currentStatComparison.winner !== 'draw' ? (
-                                    <div className={`text-lg font-bold drop-shadow-lg ${
+                                    <div className={`text-lg font-bold drop-shadow-lg flex items-center justify-center gap-2 ${
                                       state.currentStatComparison.winner === 1 ? 'text-blue-400' : 'text-red-400'
                                     }`}>
-                                      🏆 PLAYER {state.currentStatComparison.winner} DOMINATES! 🏆
+                                      <LoLIcon type="victory" size="sm" />
+                                      PLAYER {state.currentStatComparison.winner} DOMINATES!
+                                      <LoLIcon type="victory" size="sm" />
                                     </div>
                                   ) : (
-                                    <div className="text-lg font-bold text-lol-gold drop-shadow-lg">
-                                      🤝 PERFECT TIE - NO DAMAGE! 🤝
+                                    <div className="text-lg font-bold text-lol-gold drop-shadow-lg flex items-center justify-center gap-2">
+                                      <LoLIcon type="shield" size="sm" />
+                                      PERFECT TIE - NO DAMAGE!
+                                      <LoLIcon type="shield" size="sm" />
                                     </div>
                                   )}
                                 </div>
@@ -445,7 +473,9 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                       </div>
                     ) : (
                       // Show default VS when no stat selected
-                      <div className="text-4xl font-bold text-lol-gold mb-4">⚔️</div>
+                      <div className="mb-4 flex justify-center">
+                        <LoLIcon type="vs" size="2xl" className="text-lol-gold" />
+                      </div>
                     )}
 
                     {/* Battle Results (only if no stat panel or as additional info) */}
@@ -501,9 +531,12 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                     }`}>
                       {round.statComparison.winner === 'draw' ? 'Draw' : `-${round.damage} HP`}
                     </div>
-                    <div className="text-center">
-                      {round.statComparison.winner === 'draw' ? '🤝' : 
-                       round.statComparison.winner === 1 ? '👤' : '🤖'}
+                    <div className="text-center flex justify-center">
+                      {round.statComparison.winner === 'draw' ? 
+                        <LoLIcon type="shield" size="xs" /> : 
+                       round.statComparison.winner === 1 ? 
+                        <LoLIcon type="crown" size="xs" className="text-blue-400" /> : 
+                        <LoLIcon type="robot" size="xs" className="text-red-400" />}
                     </div>
                   </div>
                 ))}
