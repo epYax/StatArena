@@ -232,7 +232,7 @@ export default function AdminDebugPanel({ player, onReturnToMenu }: AdminDebugPa
               </div>
               <div className="max-h-[600px] overflow-y-auto">
                 <div className="space-y-2 p-4">
-                  {debugData.matches.map((match, index) => (
+                  {debugData.matches.map((match) => (
                     <div key={match.gameId} className="bg-gray-700 rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-4">

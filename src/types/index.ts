@@ -101,8 +101,21 @@ export interface GameState {
   currentPlayer: Player | null;
   currentBattle: Battle | null;
   isAuthenticated: boolean;
-  gamePhase: 'login' | 'menu' | 'matchmaking' | 'battle' | 'results';
+  gamePhase: 'login' | 'menu' | 'matchmaking' | 'battle' | 'results' | 'admin';
 }
+
+export type BattlePhase = 
+  | 'coin_flip' 
+  | 'slot_spinning' 
+  | 'slot_slowing'
+  | 'player_choice' 
+  | 'waiting_for_opponent'
+  | 'stat_selection' 
+  | 'anticipation' 
+  | 'reveal' 
+  | 'damage' 
+  | 'next_round'
+  | 'error';
 
 export interface StatCategory {
   id: string;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { IconType, getIconUrl, getIconFallback, getIconAlt } from '../../assets/iconMappings';
+import type { IconType } from '../../assets/iconMappings';
+import { getIconUrl, getIconFallback, getIconAlt } from '../../assets/iconMappings';
 
 interface LoLIconProps {
   type: IconType;

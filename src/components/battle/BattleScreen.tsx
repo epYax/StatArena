@@ -76,7 +76,9 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
     const phases = [
       BATTLE_PHASES.COIN_FLIP,
       BATTLE_PHASES.SLOT_SPINNING,
+      BATTLE_PHASES.SLOT_SLOWING,
       BATTLE_PHASES.PLAYER_CHOICE,
+      BATTLE_PHASES.WAITING_FOR_OPPONENT,
       BATTLE_PHASES.STAT_SELECTION,
       BATTLE_PHASES.ANTICIPATION,
       BATTLE_PHASES.REVEAL,
@@ -84,7 +86,7 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
       BATTLE_PHASES.NEXT_ROUND
     ];
     
-    const currentIndex = phases.indexOf(state.battlePhase);
+    const currentIndex = phases.indexOf(state.battlePhase as any);
     return {
       current: currentIndex >= 0 ? currentIndex + 1 : 1,
       total: phases.length,

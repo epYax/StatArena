@@ -626,6 +626,8 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
           <CoinFlip
             player1Name={currentBattle.player1.summonerName}
             player2Name={currentBattle.player2.summonerName}
+            player1Icon={currentBattle.player1.summonerIcon}
+            player2Icon={currentBattle.player2.summonerIcon}
             onFlipComplete={handleCoinFlipComplete}
           />
         ) : battlePhase === 'player_choice' && statChoices.length > 0 ? (

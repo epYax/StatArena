@@ -182,7 +182,7 @@ function generateMockMatchData(): MatchData[] {
     // Add summoner data to first match
     if (i === 0) {
       match.summonerLevel = Math.floor(Math.random() * 300) + 30;
-      match.accountCreationDate = Date.now() - Math.random() * 5 * 365 * 24 * 60 * 60 * 1000; // 0-5 years ago
+      // match.accountCreationDate = Date.now() - Math.random() * 5 * 365 * 24 * 60 * 60 * 1000; // 0-5 years ago
       match.championMasteries = mockMasteries;
     }
     
@@ -572,7 +572,7 @@ export class RiotApiService {
       console.group(`📊 CONVERTED MASTERIES`);
       console.log(`✅ Converted ALL ${convertedMasteries.length} masteries with proper names:`);
       console.log(`🔝 Top 5 masteries:`);
-      convertedMasteries.slice(0, 5).forEach((mastery, index) => {
+      convertedMasteries.slice(0, 5).forEach((mastery: any, index: number) => {
         console.log(`${index + 1}. ${mastery.championName} (ID: ${mastery.championId}) - Level ${mastery.championLevel} - ${mastery.masteryPoints.toLocaleString()} points`);
       });
       console.log(`... and ${convertedMasteries.length - 5} more champions`);

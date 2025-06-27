@@ -11,10 +11,10 @@ interface StatSlotMachineProps {
   onSpinComplete?: (choices: StatCategory[]) => void;
 }
 
-export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpinComplete }: StatSlotMachineProps) {
+export default function StatSlotMachine({ isSpinning, phase, onSpinComplete }: StatSlotMachineProps) {
   const [reelStates, setReelStates] = useState<'spinning' | 'stopping' | 'stopped'>('stopped');
   const [currentReelIndex, setCurrentReelIndex] = useState(0);
-  const [finalChoices, setFinalChoices] = useState<StatCategory[]>([]);
+  const [, setFinalChoices] = useState<StatCategory[]>([]);
   const [displayChoices, setDisplayChoices] = useState<StatCategory[]>([]);
 
   useEffect(() => {
@@ -87,33 +87,33 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
   //   return STAT_CATEGORIES[position];
   // };
 
-  const getStatDescription = () => {
-    if (selectedStat) {
-      return selectedStat.description;
-    }
-    return isSpinning ? 'Rolling for random stat category...' : 'Waiting for battle to start...';
-  };
+  // const getStatDescription = () => {
+  //   if (selectedStat) {
+  //     return selectedStat.description;
+  //   }
+  //   return isSpinning ? 'Rolling for random stat category...' : 'Waiting for battle to start...';
+  // };
 
-  const getStatTypeIndicator = () => {
-    if (!selectedStat) return null;
-    
-    return (
-      <div className="mt-3">
-        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-          selectedStat.statType === 'higher_wins' 
-            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-            : 'bg-red-500/20 text-red-400 border border-red-500/30'
-        }`}>
-          <LoLIcon type={selectedStat.statType === 'higher_wins' ? 'higher' : 'lower'} size="xs" className="mr-1" />
-          {selectedStat.statType === 'higher_wins' ? 'Higher Wins' : 'Lower Wins'}
-        </span>
-      </div>
-    );
-  };
+  // const getStatTypeIndicator = () => {
+  //   if (!selectedStat) return null;
+  //   
+  //   return (
+  //     <div className="mt-3">
+  //       <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+  //         selectedStat.statType === 'higher_wins' 
+  //           ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+  //           : 'bg-red-500/20 text-red-400 border border-red-500/30'
+  //       }`}>
+  //         <LoLIcon type={selectedStat.statType === 'higher_wins' ? 'higher' : 'lower'} size="xs" className="mr-1" />
+  //         {selectedStat.statType === 'higher_wins' ? 'Higher Wins' : 'Lower Wins'}
+  //       </span>
+  //     </div>
+  //   );
+  // };
 
   const getReelContent = (reelIndex: number) => {
     const hasChoice = displayChoices[reelIndex];
-    const isCurrentReel = currentReelIndex === reelIndex;
+    // const isCurrentReel = currentReelIndex === reelIndex;
     const isSpinning = reelStates === 'spinning' && !hasChoice;
     
     if (hasChoice) {
