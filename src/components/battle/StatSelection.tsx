@@ -48,6 +48,7 @@ export default function StatSelection({
   const handleStatChoice = (stat: StatCategory) => {
     if (!isConfirming && isTimerRunning) {
       setSelectedChoice(stat);
+      handleConfirm(stat); // Immediately confirm selection
     }
   };
 
@@ -106,7 +107,7 @@ export default function StatSelection({
         </div>
 
         <p className="text-lol-light-blue text-lg">
-          <span className="text-lol-gold font-semibold">{currentPlayer}</span> - Choose wisely!
+          <span className="text-lol-gold font-semibold">{currentPlayer}</span> - Click to select!
         </p>
         <div className="h-1 w-24 bg-gradient-to-r from-lol-gold to-lol-light-blue mx-auto mt-4"></div>
       </div>
@@ -174,42 +175,27 @@ export default function StatSelection({
         ))}
       </div>
 
-      {/* Action button */}
-      <div className="text-center">
-        <button
-          onClick={() => handleConfirm()}
-          disabled={!selectedChoice || isConfirming}
-          className={`
-            px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform
-            ${selectedChoice && !isConfirming
-              ? 'bg-gradient-to-r from-lol-gold to-yellow-600 hover:from-yellow-500 hover:to-lol-gold text-black shadow-lg shadow-lol-gold/30 hover:scale-105'
-              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            }
-          `}
-        >
-          {isConfirming ? (
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-2"></div>
-              <LoLIcon type="lightning" size="xs" className="mr-1" />
-              Locking in choice...
+      {/* Status display when confirming */}
+      {isConfirming && (
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-lol-gold/20 to-yellow-600/20 rounded-xl p-6 border-2 border-lol-gold">
+            <div className="flex items-center justify-center mb-2">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-lol-gold mr-3"></div>
+              <LoLIcon type="lightning" size="md" className="text-lol-gold mr-2" />
+              <span className="text-xl font-bold text-white">Locking in choice...</span>
             </div>
-          ) : selectedChoice ? (
-            <div className="flex items-center justify-center">
-              <LoLIcon type="battle" size="sm" className="mr-2" />
-              Battle with {selectedChoice.name}
-              <LoLIcon type="battle" size="sm" className="ml-2" />
-            </div>
-          ) : (
-            'Select a Stat to Continue'
-          )}
-        </button>
-      </div>
+            <p className="text-lol-gold font-semibold">
+              {selectedChoice?.name} selected!
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Quick info */}
       <div className="mt-6 text-center">
         <p className="text-gray-400 text-sm">
           {timeLeft > 5 
-            ? "Choose the stat you think gives you the best advantage!" 
+            ? "Click on the stat that gives you the best advantage!" 
             : "Hurry! Middle option will be auto-selected if time runs out!"
           }
         </p>
