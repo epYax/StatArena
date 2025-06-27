@@ -104,7 +104,8 @@ export default function StatSlotMachine({ isSpinning, selectedStat, phase, onSpi
             ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
             : 'bg-red-500/20 text-red-400 border border-red-500/30'
         }`}>
-          <LoLIcon type={selectedStat.statType === 'higher_wins' ? 'higher' : 'lower'} size=\"xs\" className=\"mr-1\" />\n          {selectedStat.statType === 'higher_wins' ? 'Higher Wins' : 'Lower Wins'}
+          <LoLIcon type={selectedStat.statType === 'higher_wins' ? 'higher' : 'lower'} size="xs" className="mr-1" />
+          {selectedStat.statType === 'higher_wins' ? 'Higher Wins' : 'Lower Wins'}
         </span>
       </div>
     );
