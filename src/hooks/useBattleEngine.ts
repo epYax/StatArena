@@ -32,6 +32,7 @@ interface BattleState {
   selectedStat: StatCategory | null;
   currentPlayerTurn: 1 | 2;
   playerDamageAnimation: { player1: boolean; player2: boolean };
+  floatingDamageNumbers: { id: string; player: 1 | 2; damage: number; timestamp: number }[];
   error: string | null;
   isLoading: boolean;
 }
@@ -59,6 +60,7 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
     selectedStat: null,
     currentPlayerTurn: 1,
     playerDamageAnimation: { player1: false, player2: false },
+    floatingDamageNumbers: [],
     error: null,
     isLoading: true
   });
@@ -189,7 +191,7 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       
       setTimeout(() => {
         setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.ANTICIPATION }));
-      }, 3000);
+      }, 4000); // Extended from 3000ms to 4000ms for more time to appreciate stat selection
     } catch (error) {
       console.error('Error starting round:', error);
       setState(prev => ({ 
@@ -217,11 +219,22 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       let updatedBattle = { ...prevState.currentBattle };
       let newDamageAnimation = { ...prevState.playerDamageAnimation };
       
+      let newFloatingNumbers = [...prevState.floatingDamageNumbers];
+      
       if (prevState.currentStatComparison.winner === 'draw') {
         console.log(`🤝 Draw! No damage dealt`);
       } else if (prevState.currentStatComparison.winner === 2) {
         updatedBattle.player1.hp = Math.max(0, updatedBattle.player1.hp - damage);
         newDamageAnimation.player1 = true;
+        
+        // Add floating damage number for player 1
+        newFloatingNumbers.push({
+          id: `damage-${Date.now()}-p1`,
+          player: 1,
+          damage: damage,
+          timestamp: Date.now()
+        });
+        
         setTimeout(() => setState(prev => ({ 
           ...prev, 
           playerDamageAnimation: { ...prev.playerDamageAnimation, player1: false }
@@ -229,16 +242,30 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       } else {
         updatedBattle.player2.hp = Math.max(0, updatedBattle.player2.hp - damage);
         newDamageAnimation.player2 = true;
+        
+        // Add floating damage number for player 2
+        newFloatingNumbers.push({
+          id: `damage-${Date.now()}-p2`,
+          player: 2,
+          damage: damage,
+          timestamp: Date.now()
+        });
+        
         setTimeout(() => setState(prev => ({ 
           ...prev, 
           playerDamageAnimation: { ...prev.playerDamageAnimation, player2: false }
         })), 1000);
       }
+      
+      // Clean up old floating numbers (older than 3 seconds)
+      const now = Date.now();
+      newFloatingNumbers = newFloatingNumbers.filter(num => now - num.timestamp < 3000);
 
       return {
         ...prevState,
         currentBattle: updatedBattle,
-        playerDamageAnimation: newDamageAnimation
+        playerDamageAnimation: newDamageAnimation,
+        floatingDamageNumbers: newFloatingNumbers
       };
     });
   }, []);
@@ -363,18 +390,18 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
       case BATTLE_PHASES.REVEAL:
         timer = setTimeout(() => {
           setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.DAMAGE }));
-        }, 3000);
+        }, 4000); // Extended from 3000ms to 4000ms for better result absorption
         break;
       case BATTLE_PHASES.DAMAGE:
         applyDamageToPlayers();
         timer = setTimeout(() => {
           setState(prev => ({ ...prev, battlePhase: BATTLE_PHASES.NEXT_ROUND }));
-        }, 2000);
+        }, 3000); // Extended from 2000ms to 3000ms for damage animation to be fully appreciated
         break;
       case BATTLE_PHASES.NEXT_ROUND:
         timer = setTimeout(() => {
           checkBattleEnd();
-        }, 2000);
+        }, 2500); // Extended from 2000ms to 2500ms for better transition to next round
         break;
       case BATTLE_PHASES.STAT_SELECTION:
         if (state.isMatchDataLoaded && state.selectedStat) {
@@ -400,7 +427,7 @@ export function useBattleEngine(initialBattle: Battle, onBattleComplete: (winner
     if (state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE && state.currentPlayerTurn === 2 && state.statChoices.length > 0) {
       console.log('🤖 AI opponent (Player 2) is making their choice...');
       
-      const aiDecisionTime = 3000 + Math.random() * 2000;
+      const aiDecisionTime = 5000 + Math.random() * 3000; // Extended from 3-5s to 5-8s for more realistic AI thinking
       
       const aiTimer = setTimeout(() => {
         const aiChoice = selectStatForAI(state.statChoices);

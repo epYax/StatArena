@@ -20,36 +20,75 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
 
   const getRoundStatus = () => {
     if (!state.isMatchDataLoaded) {
-      return 'Loading match data...';
+      return '🔍 Analyzing match histories and champion masteries...';
     }
     
     switch (state.battlePhase) {
       case BATTLE_PHASES.COIN_FLIP:
-        return 'Determining turn order...';
+        return '🪙 Ancient coin decides who strikes first...';
       case BATTLE_PHASES.SLOT_SPINNING:
-        return 'Rolling stat options...';
+        return '🎰 The Rift\'s magic reveals stat categories...';
       case BATTLE_PHASES.SLOT_SLOWING:
-        return 'Finalizing choices...';
+        return '✨ Statistical destinies taking shape...';
       case BATTLE_PHASES.PLAYER_CHOICE:
-        return `Player ${state.currentPlayerTurn} choosing stat...`;
+        const playerName = state.currentPlayerTurn === 1 
+          ? state.currentBattle.player1.summonerName.split('#')[0]
+          : state.currentBattle.player2.summonerName.split('#')[0];
+        return `⚡ ${playerName} weighing their statistical advantage...`;
       case BATTLE_PHASES.WAITING_FOR_OPPONENT:
-        return 'Opponent choosing...';
+        return '🤖 AI opponent analyzing optimal strategy...';
       case BATTLE_PHASES.STAT_SELECTION:
-        return 'Preparing battle...';
+        return '⚔️ Battle preparations underway...';
       case BATTLE_PHASES.ANTICIPATION:
         if (state.showCalculationAnimation) {
-          return 'Battle calculations in progress...';
+          return '🧮 Hextech algorithms processing match data...';
         }
-        return 'Revealing stats...';
+        return '🔮 The numbers don\'t lie - revealing truth...';
       case BATTLE_PHASES.REVEAL:
-        return 'Determining winner...';
+        const comparison = state.currentStatComparison;
+        if (comparison) {
+          return `📊 ${comparison.category}: ${comparison.player1Value} vs ${comparison.player2Value}`;
+        }
+        return '🏆 Statistical supremacy determined...';
       case BATTLE_PHASES.DAMAGE:
-        return 'Applying damage...';
+        const winner = state.currentStatComparison?.winner;
+        if (winner === 'draw') {
+          return '🤝 Perfectly matched - no damage dealt!';
+        } else if (winner === 1) {
+          return '💥 Player 1 strikes with superior stats!';
+        } else if (winner === 2) {
+          return '💥 Player 2 dominates with better performance!';
+        }
+        return '⚡ Statistical warfare in progress...';
       case BATTLE_PHASES.NEXT_ROUND:
-        return 'Preparing next round...';
+        const roundNum = state.currentBattle.currentRound + 1;
+        if (roundNum >= 5) {
+          return '🏁 Final calculations - determining ultimate victor...';
+        }
+        return `🔄 Round ${roundNum + 1} approaches - new challenges await...`;
       default:
-        return '';
+        return '⚔️ The battle rages on...';
     }
+  };
+
+  const getPhaseProgress = () => {
+    const phases = [
+      BATTLE_PHASES.COIN_FLIP,
+      BATTLE_PHASES.SLOT_SPINNING,
+      BATTLE_PHASES.PLAYER_CHOICE,
+      BATTLE_PHASES.STAT_SELECTION,
+      BATTLE_PHASES.ANTICIPATION,
+      BATTLE_PHASES.REVEAL,
+      BATTLE_PHASES.DAMAGE,
+      BATTLE_PHASES.NEXT_ROUND
+    ];
+    
+    const currentIndex = phases.indexOf(state.battlePhase);
+    return {
+      current: currentIndex >= 0 ? currentIndex + 1 : 1,
+      total: phases.length,
+      percentage: currentIndex >= 0 ? ((currentIndex + 1) / phases.length) * 100 : 0
+    };
   };
 
   // Show loading screen
@@ -83,6 +122,19 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
               <div className="text-center">
                 <div className="text-xs text-gray-400">Battle Status</div>
                 <div className="text-sm text-lol-gold font-semibold">{getRoundStatus()}</div>
+                {/* Phase Progress Bar */}
+                <div className="mt-2 w-48 mx-auto">
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                    <span>Round Progress</span>
+                    <span>{getPhaseProgress().current}/{getPhaseProgress().total}</span>
+                  </div>
+                  <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-lol-gold to-lol-light-blue rounded-full transition-all duration-700 ease-out"
+                      style={{ width: `${getPhaseProgress().percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -91,6 +143,8 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
               {/* Player 1 */}
               <div className={`bg-gradient-to-r from-blue-900/30 to-blue-700/30 rounded-lg p-2 border border-blue-500/30 transition-all duration-300 ${
                 state.playerDamageAnimation.player1 ? 'animate-pulse bg-red-500/50 border-red-500 scale-105 shadow-lg shadow-red-500/50' : ''
+              } ${
+                state.currentPlayerTurn === 1 && (state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE || state.battlePhase === BATTLE_PHASES.STAT_SELECTION) ? 'active-player-highlight' : ''
               }`}>
                 <div className="flex items-center space-x-2">
                   <img 
@@ -140,6 +194,8 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
               {/* Player 2 */}
               <div className={`bg-gradient-to-r from-red-900/30 to-red-700/30 rounded-lg p-2 border border-red-500/30 transition-all duration-300 ${
                 state.playerDamageAnimation.player2 ? 'animate-pulse bg-red-500/50 border-red-500 scale-105 shadow-lg shadow-red-500/50' : ''
+              } ${
+                state.currentPlayerTurn === 2 && (state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE || state.battlePhase === BATTLE_PHASES.STAT_SELECTION) ? 'active-player-highlight' : ''
               }`}>
                 <div className="flex items-center space-x-2">
                   {state.currentPlayerTurn === 2 && (
@@ -179,6 +235,23 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
           </div>
         </div>
 
+        {/* Floating Damage Numbers */}
+        {state.floatingDamageNumbers.map((damageNum) => (
+          <div
+            key={damageNum.id}
+            className={`floating-damage ${damageNum.player === 1 ? 'left-1/4' : 'right-1/4'}`}
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: damageNum.player === 1 ? '25%' : '75%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1000
+            }}
+          >
+            -{damageNum.damage}
+          </div>
+        ))}
+
         {/* Main Content Area with smooth transitions */}
         <div className="flex-1 relative overflow-hidden">
           
@@ -210,11 +283,15 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
             <div className="flex items-center justify-center h-full p-8">
               {state.battlePhase === BATTLE_PHASES.COIN_FLIP ? (
                 /* Coin Flip */
-                <CoinFlip
+                <div className="battle-phase-enter">
+                  <CoinFlip
                   player1Name={state.currentBattle.player1.summonerName}
                   player2Name={state.currentBattle.player2.summonerName}
+                  player1Icon={state.currentBattle.player1.summonerIcon}
+                  player2Icon={state.currentBattle.player2.summonerIcon}
                   onFlipComplete={actions.handleCoinFlipComplete}
-                />
+                  />
+                </div>
               ) : state.battlePhase === BATTLE_PHASES.PLAYER_CHOICE && state.statChoices.length > 0 ? (
                 /* Stat Selection or Waiting */
                 state.currentPlayerTurn === 1 ? (
@@ -281,15 +358,17 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                 </div>
               ) : (
                 /* Normal Battle Arena - Expanded player cards for battle phases */
-                <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center battle-content-enter">
                   {/* Player 1 - Expanded */}
-                  <PlayerCard 
+                  <div className="player-card-enter-left">
+                    <PlayerCard 
                     player={state.currentBattle.player1}
                     statValue={state.currentStatComparison?.player1Value}
                     isWinner={state.currentStatComparison?.winner === 1}
                     showStat={state.battlePhase === BATTLE_PHASES.REVEAL || state.battlePhase === BATTLE_PHASES.DAMAGE || state.battlePhase === BATTLE_PHASES.NEXT_ROUND}
                     isShaking={state.battlePhase === BATTLE_PHASES.DAMAGE && state.currentStatComparison?.winner === 2}
-                  />
+                    />
+                  </div>
 
                   {/* VS Section - Battle results */}
                   <div className="text-center">
@@ -306,13 +385,15 @@ export default function BattleScreen({ battle, onBattleComplete }: BattleScreenP
                   </div>
 
                   {/* Player 2 - Expanded */}
-                  <PlayerCard 
+                  <div className="player-card-enter-right">
+                    <PlayerCard 
                     player={state.currentBattle.player2}
                     statValue={state.currentStatComparison?.player2Value}
                     isWinner={state.currentStatComparison?.winner === 2}
                     showStat={state.battlePhase === BATTLE_PHASES.REVEAL || state.battlePhase === BATTLE_PHASES.DAMAGE || state.battlePhase === BATTLE_PHASES.NEXT_ROUND}
                     isShaking={state.battlePhase === BATTLE_PHASES.DAMAGE && state.currentStatComparison?.winner === 1}
-                  />
+                    />
+                  </div>
                 </div>
               )}
             </div>

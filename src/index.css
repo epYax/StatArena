@@ -980,3 +980,237 @@ button:focus-visible, input:focus-visible {
     0 2px 6px rgba(0, 0, 0, 0.2),
     0 0 12px rgba(0, 191, 255, 0.2);
 }
+
+/* 3D Coin Flip Animations */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@keyframes spin-3d {
+  0% { transform: rotateY(0deg) rotateX(0deg); }
+  25% { transform: rotateY(90deg) rotateX(15deg); }
+  50% { transform: rotateY(180deg) rotateX(0deg); }
+  75% { transform: rotateY(270deg) rotateX(-15deg); }
+  100% { transform: rotateY(360deg) rotateX(0deg); }
+}
+
+.animate-spin-3d {
+  animation: spin-3d 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Enhanced Battle Phase Transitions */
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-2deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.battle-phase-enter {
+  animation: fadeInScale 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.battle-phase-exit {
+  animation: slideOutToTop 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.battle-content-enter {
+  animation: slideInFromBottom 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.player-card-enter-left {
+  animation: slideInFromLeft 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.player-card-enter-right {
+  animation: slideInFromRight 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Active Element Glowing Highlights */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(200, 155, 60, 0.6), 0 0 50px rgba(212, 175, 55, 0.4);
+  }
+}
+
+@keyframes activePlayerGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 15px rgba(0, 191, 255, 0.4),
+      inset 0 0 15px rgba(0, 191, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 25px rgba(0, 191, 255, 0.7),
+      0 0 40px rgba(79, 195, 247, 0.5),
+      inset 0 0 20px rgba(0, 191, 255, 0.2);
+  }
+}
+
+@keyframes winnerGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(76, 175, 80, 0.4),
+      inset 0 0 15px rgba(76, 175, 80, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(76, 175, 80, 0.7),
+      0 0 50px rgba(129, 199, 132, 0.5),
+      inset 0 0 25px rgba(76, 175, 80, 0.2);
+  }
+}
+
+.active-element-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.active-player-highlight {
+  animation: activePlayerGlow 2.5s ease-in-out infinite;
+  border: 2px solid rgba(0, 191, 255, 0.5) !important;
+}
+
+.winner-highlight {
+  animation: winnerGlow 1.5s ease-in-out infinite;
+  border: 2px solid rgba(76, 175, 80, 0.7) !important;
+}
+
+.stat-selection-glow {
+  box-shadow: 
+    0 0 20px rgba(200, 155, 60, 0.4),
+    inset 0 0 15px rgba(200, 155, 60, 0.1);
+  border: 2px solid rgba(200, 155, 60, 0.6);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.calculation-active {
+  box-shadow: 
+    0 0 25px rgba(139, 92, 246, 0.5),
+    inset 0 0 20px rgba(139, 92, 246, 0.1);
+  border: 2px solid rgba(139, 92, 246, 0.6);
+  animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+/* Floating Damage Numbers */
+@keyframes floatDamage {
+  0% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.8);
+  }
+}
+
+@keyframes floatHeal {
+  0% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.8);
+  }
+}
+
+.floating-damage {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #ff4444;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  animation: floatDamage 2s ease-out forwards;
+}
+
+.floating-heal {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #44ff44;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  animation: floatHeal 2s ease-out forwards;
+}

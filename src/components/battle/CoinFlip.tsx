@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 interface CoinFlipProps {
   player1Name: string;
   player2Name: string;
+  player1Icon: string;
+  player2Icon: string;
   onFlipComplete: (winner: 1 | 2) => void;
 }
 
-export default function CoinFlip({ player1Name, player2Name, onFlipComplete }: CoinFlipProps) {
+export default function CoinFlip({ player1Name, player2Name, player1Icon, player2Icon, onFlipComplete }: CoinFlipProps) {
   const [isFlipping, setIsFlipping] = useState(false);
   const [result, setResult] = useState<1 | 2 | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -19,22 +21,22 @@ export default function CoinFlip({ player1Name, player2Name, onFlipComplete }: C
       // Determine the winner (random)
       const winner = Math.random() > 0.5 ? 1 : 2;
       
-      // Show result after flip animation
+      // Show result after flip animation (extended duration)
       const flipDuration = setTimeout(() => {
         setIsFlipping(false);
         setResult(winner);
         setShowResult(true);
         
-        // Call callback after showing result
+        // Call callback after showing result (extended delay)
         const resultDelay = setTimeout(() => {
           onFlipComplete(winner);
-        }, 1500);
+        }, 2500);
         
         return () => clearTimeout(resultDelay);
-      }, 2000);
+      }, 3000); // Extended from 2000ms to 3000ms
       
       return () => clearTimeout(flipDuration);
-    }, 500);
+    }, 1000); // Extended from 500ms to 1000ms
     
     return () => clearTimeout(startDelay);
   }, [onFlipComplete]);
@@ -69,27 +71,71 @@ export default function CoinFlip({ player1Name, player2Name, onFlipComplete }: C
         </div>
       </div>
 
-      {/* Coin Animation */}
+      {/* Enhanced 3D Coin Animation */}
       <div className="mb-8 flex justify-center">
-        <div className={`relative w-32 h-32 ${isFlipping ? 'animate-spin' : ''}`}>
+        <div className="relative w-40 h-40 perspective-1000">
           <div className={`
-            w-full h-full rounded-full border-4 border-lol-gold flex items-center justify-center text-4xl font-bold
-            transition-all duration-500 transform
-            ${isFlipping ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg shadow-yellow-500/50' : 'bg-gradient-to-br from-lol-gold to-yellow-600'}
+            relative w-full h-full transform-style-preserve-3d transition-all duration-1000
+            ${isFlipping ? 'animate-spin-3d' : ''}
             ${showResult ? 'scale-110' : ''}
           `}>
-            {!showResult ? (
-              <span className="text-black animate-pulse">🪙</span>
-            ) : (
-              <span className="text-black">
-                {result === 1 ? '👑' : '⚔️'}
-              </span>
+            {/* Coin Front Face (Player 1) */}
+            <div className={`
+              absolute inset-0 w-full h-full rounded-full border-4 border-lol-gold
+              flex items-center justify-center backface-hidden
+              bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl
+              ${result === 1 && showResult ? 'shadow-blue-500/50 ring-4 ring-blue-400/50' : ''}
+            `}>
+              <div className="relative">
+                <img 
+                  src={player1Icon} 
+                  alt={player1Name}
+                  className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
+                />
+                {result === 1 && showResult && (
+                  <div className="absolute -top-2 -right-2 text-2xl animate-bounce">👑</div>
+                )}
+              </div>
+            </div>
+            
+            {/* Coin Back Face (Player 2) */}
+            <div className={`
+              absolute inset-0 w-full h-full rounded-full border-4 border-lol-gold
+              flex items-center justify-center backface-hidden transform rotate-y-180
+              bg-gradient-to-br from-red-400 to-red-600 shadow-xl
+              ${result === 2 && showResult ? 'shadow-red-500/50 ring-4 ring-red-400/50' : ''}
+            `}>
+              <div className="relative">
+                <img 
+                  src={player2Icon} 
+                  alt={player2Name}
+                  className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
+                />
+                {result === 2 && showResult && (
+                  <div className="absolute -top-2 -right-2 text-2xl animate-bounce">👑</div>
+                )}
+              </div>
+            </div>
+            
+            {/* Spinning glow effect */}
+            {isFlipping && (
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-white animate-pulse opacity-75"></div>
             )}
           </div>
           
-          {/* Spinning effect overlay */}
+          {/* Dramatic lighting effects */}
           {isFlipping && (
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-white animate-spin"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-radial from-lol-gold/20 to-transparent animate-pulse"></div>
+          )}
+          
+          {/* Victory sparkles */}
+          {showResult && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-0 left-1/4 text-lol-gold animate-ping">✨</div>
+              <div className="absolute top-1/4 right-0 text-lol-gold animate-ping" style={{animationDelay: '0.5s'}}>✨</div>
+              <div className="absolute bottom-1/4 left-0 text-lol-gold animate-ping" style={{animationDelay: '1s'}}>✨</div>
+              <div className="absolute bottom-0 right-1/4 text-lol-gold animate-ping" style={{animationDelay: '1.5s'}}>✨</div>
+            </div>
           )}
         </div>
       </div>
